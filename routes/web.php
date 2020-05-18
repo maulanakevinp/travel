@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\Ipaymu;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/tes', function () {
+    $ipaymu = Ipaymu::checkAccount();
+    return $ipaymu;
+});
+
+Route::get('/notify', function () {
+    return 'pembayaran berhasil';
 });
