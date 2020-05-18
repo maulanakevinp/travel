@@ -170,7 +170,7 @@ class Ipaymu
                 'key' => config('ipaymu.key'),
                 'amount' => $amount,
                 'uniqid' => date('YmdHis'),
-                'notifyUrl' => config('ipaymu.unotify'),
+                'notifyUrl' => url('/notify'),
                 'name' => $name,
                 'phone' => $phone,
                 'email' => $email
@@ -183,7 +183,7 @@ class Ipaymu
         return $response;
     }
 
-    public function qr($name, $phone, $email, $amount, $zipCode, $city)
+    public static function qr($name, $phone, $email, $amount, $zipCode, $city)
     {
         $curl = curl_init();
 
@@ -202,7 +202,7 @@ class Ipaymu
                 'phone' => $phone,
                 'email' => $email,
                 'amount' => $amount,
-                'notifyUrl' => config('ipaymu.unotify'),
+                'notifyUrl' => url('/notify'),
                 'referenceId' => date('YmdHis'),
                 'zipCode' => $zipCode,
                 'city' => $city
