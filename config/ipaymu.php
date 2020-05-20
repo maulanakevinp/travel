@@ -11,4 +11,5 @@ return [
     */
 
     'key' => env('IPAYMU_KEY'),
+    'va' => env('IPAYMU_VA'),
 ];
