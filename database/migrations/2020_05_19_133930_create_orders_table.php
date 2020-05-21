@@ -26,8 +26,8 @@ class CreateOrdersTable extends Migration
             $table->string('status')->nullable();
             $table->string('asal');
             $table->tinyInteger('qty');
-            $table->timestamp('tanggal_berangkat');
-            $table->timestamp('tanggal_pulang');
+            $table->timestamp('tanggal_berangkat')->nullable();
+            $table->timestamp('tanggal_pulang')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

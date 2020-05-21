@@ -13,4 +13,10 @@ class Gallery extends Model
     {
         return $this->belongsTo('App\Package');
     }
+
+    public function company()
+    {
+        return $this->belongsTo('App\Company');
+    }
+
 }
