@@ -4,114 +4,165 @@ namespace App\Helpers;
 
 class Ipaymu
 {
-    public static function checkAccount()
-    {
-        $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://my.ipaymu.com/api/saldo",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => array(
-                'key' => config('ipaymu.key'),
-                'format' => 'json'
-            ),
-            CURLOPT_HTTPHEADER => array(
-                "Accept: application/json"
-            ),
-        ));
+    protected $apiKey, $va, $notifyUrl;
+    protected $buyer = array();
+    protected $cart = array();
 
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        return $response;
+    public function __construct($apiKey, $va) {
+        $this->apiKey = $apiKey;
+        $this->va = $va;
     }
 
-    public static function checkTransaction($id)
+    public function getApiKey()
     {
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://my.ipaymu.com/api/transaksi",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => array(
-                'key' => config('ipaymu.key'),
-                'id' => $id,
-                'format' => 'json'
-            ),
-            CURLOPT_HTTPHEADER => array(
-                "Accept: application/json"
-            ),
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        return $response;
+        return $this->apiKey;
     }
 
-    public static function checkout($name, $email, $phone, $amount, $paymentMethod, $paymentChannel, $description = '')
+    public function getVa()
     {
-        $va           = config('ipaymu.va'); //get on iPaymu dashboard
-        $secret       = config('ipaymu.key'); //get on iPaymu dashboard
+        return $this->va;
+    }
 
-        $url          = 'https://my.ipaymu.com/api/v2/payment/direct'; //url
-        $method       = 'POST'; //method
+    public function getNotifyUrl()
+    {
+        if ($this->notifyUrl) {
+            return $this->notifyUrl;
+        }
 
-        //Request Body//
-        $body['name']           = $name;
-        $body['email']          = $email;
-        $body['phone']          = $phone;
-        $body['amount']         = $amount;
-        $body['paymentMethod']  = $paymentMethod;
-        $body['paymentChannel'] = $paymentChannel;
-        $body['notifyUrl']      = url('/notify');
-        $body['description']    = $description;
-        //End Request Body//
+        return url('/');
+    }
 
-        //Generate Signature
-        // *Don't change this
-        $jsonBody     = json_encode($body, JSON_UNESCAPED_SLASHES);
-        $requestBody  = strtolower(hash('sha256', $jsonBody));
-        $stringToSign = strtoupper($method) . ':' . $va . ':' . $requestBody . ':' . $secret;
+    public function setNotifyUrl($notifyUrl)
+    {
+        $this->notifyUrl = $notifyUrl;
+    }
+
+    public function setBuyer($buyer)
+    {
+        $this->buyer = [
+            'name'  => $buyer['name'],
+            'phone' => $buyer['phone'],
+            'email' => $buyer['email'],
+        ];
+    }
+
+    public function setCart($cart)
+    {
+        $this->cart = [
+            'amount'            => $cart['amount'],
+            'description'       => $cart['description'],
+            'paymentMethod'     => $cart['paymentMethod'],
+            'paymentChannel'    => $cart['paymentChannel'],
+            'referenceId'       => $cart['referenceId']
+        ];
+    }
+
+    public function getBody()
+    {
+        $body = [
+            'name'          => $this->buyer['name'],
+            'email'         => $this->buyer['email'],
+            'phone'         => $this->buyer['phone'],
+            'amount'        => $this->cart['amount'],
+            'paymentMethod' => $this->cart['paymentMethod'],
+            'paymentChannel'=> $this->cart['paymentChannel'],
+            'description'   => $this->cart['description'],
+            'referenceId'   => $this->cart['referenceId'],
+            'notifyUrl'     => $this->getNotifyUrl(),
+            'expired'       => 24
+        ];
+        return $body;
+    }
+
+    public function config($url)
+    {
+        return 'https://my.ipaymu.com/api/v2/'.$url;
+    }
+
+    public function getSignature($data, $credentials)
+    {
+        $body = json_encode($data, JSON_UNESCAPED_SLASHES);
+        $requestBody  = strtolower(hash('sha256', $body));
+        $secret       = $credentials['apikey'];
+        $va           = $credentials['va'];
+        $stringToSign = 'POST:' . $va . ':' . $requestBody . ':' . $secret;
         $signature    = hash_hmac('sha256', $stringToSign, $secret);
-        $timestamp    = Date('YmdHis');
-        //End Generate Signature
 
-        $ch = curl_init($url);
+        return $signature;
+    }
 
+    public function request($config, $body, $credentials)
+    {
+        $signature = $this->getSignature($body, $credentials);
+        $timestamp = Date('YmdHis');
         $headers = array(
-            'Accept: application/json',
             'Content-Type: application/json',
-            'va: ' . $va,
+            'va: ' . $credentials['va'],
             'signature: ' . $signature,
             'timestamp: ' . $timestamp
         );
 
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $config);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
         curl_setopt($ch, CURLOPT_POST, count($body));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
-
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        $response = curl_exec($ch);
+
+        $request = curl_exec($ch);
+
+        if ($request === false) {
+            echo 'Curl Error: ' . curl_error($ch);
+        } else {
+            return json_decode($request, true);
+        }
+
         curl_close($ch);
+        exit;
+    }
 
-        return json_decode($response);
+    /**
+     * Check Saldo.
+     */
+    public function cekSaldo()
+    {
+        $data = file_get_contents('https://my.ipaymu.com/api/saldo?key='.$this->getApiKey());
+        return json_decode($data, true);
+    }
 
+    public function cekTransaksi($id)
+    {
+        $response = $this->request(
+            "https://my.ipaymu.com/api/transaksi",
+            [
+                'key' => $this->getApiKey(),
+                'id' => $id,
+                'format' => 'json'
+            ],
+            [
+                'va' => $this->getVa(),
+                'apikey' => $this->getApiKey(),
+            ]
+        );
+
+        return $response;
+    }
+
+    public function checkout()
+    {
+        $response = $this->request(
+            $this->config('payment/direct'),
+            $this->getBody(),
+            [
+                'va' => $this->getVa(),
+                'apikey' => $this->getApiKey(),
+            ]
+        );
+
+        return $response;
     }
 }
