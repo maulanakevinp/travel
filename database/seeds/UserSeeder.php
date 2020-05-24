@@ -24,5 +24,15 @@ class UserSeeder extends Seeder
             'password'          => Hash::make('asdf1234'),
             'remember_token'    => Str::random(10),
         ]);
+
+        User::create([
+            'name'              => 'Member',
+            'phone'             => '080987654321',
+            'address'           => 'Jl. Indonesia 2',
+            'email'             => 'member@gmail.com',
+            'email_verified_at' => now(),
+            'password'          => Hash::make('asdf1234'),
+            'remember_token'    => Str::random(10),
+        ]);
     }
 }

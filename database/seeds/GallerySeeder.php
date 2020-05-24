@@ -1,5 +1,6 @@
 <?php
 
+use App\Gallery;
 use Illuminate\Database\Seeder;
 
 class GallerySeeder extends Seeder
@@ -11,6 +12,19 @@ class GallerySeeder extends Seeder
      */
     public function run()
     {
-        //
+        Gallery::create([
+            'company_id'    => 1,
+            'image'         => 'public/gallery/slide1.png'
+        ]);
+
+        Gallery::create([
+            'company_id'    => 1,
+            'image'         => 'public/gallery/slide2.png'
+        ]);
+
+        Gallery::create([
+            'company_id'    => 1,
+            'image'         => 'public/gallery/slide3.png'
+        ]);
     }
 }

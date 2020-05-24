@@ -23,11 +23,13 @@ class CreateOrdersTable extends Migration
             $table->string('total');
             $table->text('paymentNo');
             $table->timestamp('expired');
-            $table->string('status')->nullable();
+            $table->string('status');
             $table->string('asal');
             $table->tinyInteger('qty');
             $table->timestamp('tanggal_berangkat')->nullable();
             $table->timestamp('tanggal_pulang')->nullable();
+            $table->tinyInteger('rating')->nullable();
+            $table->text('testimoni')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
