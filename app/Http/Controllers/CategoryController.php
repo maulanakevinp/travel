@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
@@ -14,17 +15,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $categories = Category::all();
+        return view('category.index', compact('categories'));
     }
 
     /**
@@ -35,7 +27,14 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name'  => ['required', 'unique:categories,name']
+        ]);
+
+        Category::create($data);
+
+        alert()->success('Kategori '.$request->name.' berhasil ditambahkan', 'Berhasil');
+        return redirect()->back();
     }
 
     /**
@@ -46,18 +45,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
+        return response()->json($category);
     }
 
     /**
@@ -69,7 +57,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $data = $request->validate([
+            'name'  => ['required', Rule::unique('categories', 'name')->ignore($category->name),]
+        ]);
+
+        $category->update($data);
+        alert()->success('Kategori '.$category->name.' berhasil diperbarui', 'Berhasil');
+        return redirect()->back();
+
     }
 
     /**
@@ -80,6 +75,17 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        if ($category->delete()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Kategori '.$category->name.' berhasil dihapus',
+            ]);
+        } else {
+            response()->json([
+                'success' => false,
+                'message' => 'Kategori '.$category->name.' gagal dihapus',
+            ]);
+        }
+
     }
 }

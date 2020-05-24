@@ -21,6 +21,9 @@ Route::get('/', 'HomeController@index');
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/leaflet', function(){
-    return view('index');
-});
+Route::resource('category', 'CategoryController');
+Route::resource('gallery', 'GalleryController');
+Route::resource('company', 'CompanyController');
+Route::resource('package', 'PackageController');
+Route::resource('order', 'OrderController');
+Route::resource('user', 'UserController');

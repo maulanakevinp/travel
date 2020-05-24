@@ -18,12 +18,13 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5731b34870.js" crossorigin="anonymous"></script>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/Testimonials.css') }}" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <style>
         html {
             scroll-behavior: smooth;
@@ -33,6 +34,7 @@
 </head>
 
 <body style="background-color:#1c1e21">
+    @include('sweet::alert')
     <div id="app" class="text-white">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm font-weight-bold fixed-top">
             <div class="container">
@@ -66,6 +68,7 @@
                             <a class="nav-link"
                                 href="{{ url('/#hubungi-kami') }}">{{ __('Hubungi Kami') }}</a>
                         </li>
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -88,11 +91,12 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
-
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item {{ Request::segment(1) == "category" ? "active" : "" }}" href="{{ route('category.index') }}">{{ __('Category') }}</a>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        <i class="fas fa-fw fa-sign-out-alt"></i> {{ __('Logout') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}"
@@ -115,6 +119,11 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script>
+        const baseURL = $("meta[name='base-url']").attr('content');
+        const _token = $("meta[name='csrf-token']").attr('content');
+    </script>
+
     @stack('scripts')
 </body>
 
