@@ -88,13 +88,18 @@
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex-inline" href="#" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <img id="img-avatar-header" src="{{ asset(Storage::url(auth()->user()->avatar)) }}" class="rounded-circle" width="32" height="32" alt="Frontted">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item {{ Request::segment(1) == "company" ? "active" : "" }}" href="{{ route('company.index') }}">{{ __('Company') }}</a>
-                                    <a class="dropdown-item {{ Request::segment(1) == "category" ? "active" : "" }}" href="{{ route('category.index') }}">{{ __('Category') }}</a>
+                                    <a class="dropdown-item {{ Request::segment(1) == "user" ? "active" : "" }}" href="{{ route('user.show', auth()->user()) }}">{{ __('Profile') }}</a>
+                                    <a class="dropdown-item {{ Request::segment(1) == "pengaturan" ? "active" : "" }}" href="{{ route('pengaturan') }}">{{ __('Pengaturan') }}</a>
+                                    @can('admin')
+                                        <a class="dropdown-item {{ Request::segment(1) == "company" ? "active" : "" }}" href="{{ route('company.index') }}">{{ __('Company') }}</a>
+                                        <a class="dropdown-item {{ Request::segment(1) == "category" ? "active" : "" }}" href="{{ route('category.index') }}">{{ __('Category') }}</a>
+                                    @endcan
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <i class="fas fa-fw fa-sign-out-alt"></i> {{ __('Logout') }}
