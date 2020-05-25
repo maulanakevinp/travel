@@ -94,7 +94,7 @@
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item {{ Request::segment(1) == "user" ? "active" : "" }}" href="{{ route('user.show', auth()->user()) }}">{{ __('Profile') }}</a>
+                                    <a class="dropdown-item {{ Request::segment(1) == "profil" ? "active" : "" }}" href="{{ route('profil') }}">{{ __('Profil') }}</a>
                                     <a class="dropdown-item {{ Request::segment(1) == "pengaturan" ? "active" : "" }}" href="{{ route('pengaturan') }}">{{ __('Pengaturan') }}</a>
                                     @can('admin')
                                         <a class="dropdown-item {{ Request::segment(1) == "company" ? "active" : "" }}" href="{{ route('company.index') }}">{{ __('Company') }}</a>

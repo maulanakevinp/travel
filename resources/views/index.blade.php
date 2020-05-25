@@ -168,7 +168,7 @@
                     <div class="card bg-dark shadow h-100 testimonials-clean">
                         <div class="card-body text-center text-white">
                             <h4>Email</h4>
-                            <a href="mailto{{ $company->email }}" class="text-white">{{ $company->email }}</a>
+                            <a href="mailto:{{ $company->email }}" class="text-white">{{ $company->email }}</a>
                         </div>
                     </div>
                 </div>

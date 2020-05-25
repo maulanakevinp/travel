@@ -33,37 +33,31 @@
                         </div>
                     </div>
                     <hr>
-                    <form action="{{ route("update-profil") }}" method="post">
-                        @csrf @method('patch')
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <div class="form-group row mb-2">
-                                    <label for="nama" class="col-md-3 col-form-label pr-0">Nama :</label>
-                                    <div class="col-md-9">
-                                        <input id="nama" name="nama" type="text" class="form-control" value="{{ auth()->user()->name }}">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-2">
-                                    <label for="nohp" class="col-md-3 col-form-label pr-0">No. Hp :</label>
-                                    <div class="col-md-9">
-                                        <input id="nohp" name="nohp" type="text" class="form-control" value="{{ auth()->user()->phone }}">
-                                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="form-group row mb-2">
+                                <label for="nama" class="col-md-3 col-form-label pr-0">Nama :</label>
+                                <div class="col-md-9">
+                                    <input id="nama" type="text" class="form-control" value="{{ auth()->user()->name }}" disabled>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group row mb-2">
-                                    <label for="alamat" class="col-md-3 col-form-label pr-0">Alamat :</label>
-                                    <div class="col-md-9">
-                                        <textarea name="alamat" id="alamat" class="form-control" rows="3" style="resize: none">{{ auth()->user()->address }}</textarea>
-                                    </div>
+                            <div class="form-group row mb-2">
+                                <label for="nohp" class="col-md-3 col-form-label pr-0">No. Hp :</label>
+                                <div class="col-md-9">
+                                    <input id="nohp" type="text" class="form-control" value="{{ auth()->user()->phone }}" disabled>
                                 </div>
                             </div>
                         </div>
-                        <div class="float-right">
-                            <a href="{{ route('profil') }}" class="btn btn-secondary mt-3">Kembali</a>
-                            <button type="submit" class="btn btn-success mt-3">Simpan</button>
+                        <div class="col-md-6">
+                            <div class="form-group row mb-2">
+                                <label for="alamat" class="col-md-3 col-form-label pr-0">Alamat :</label>
+                                <div class="col-md-9">
+                                    <textarea name="alamat" id="alamat" class="form-control" rows="3" disabled style="resize: none">{{ auth()->user()->address }}</textarea>
+                                </div>
+                            </div>
                         </div>
-                    </form>
+                    </div>
+                    <a href="{{ route('edit-profil') }}" class="btn btn-success mt-3 float-right"><i class="fas fa-edit"></i> Edit</a>
                 </div>
             </div>
         </div>
@@ -71,29 +65,12 @@
 </div>
 
 <input type="file" name="avatar" id="input-avatar" style="display: none">
-
-<div class="modal fade" id="displayImageModal" tabindex="-1" role="dialog" aria-labelledby="displayImageModalLabel" aria-hidden="true">
-    <button type="button" class="close mr-3" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true" class="text-white h1">&times;</span>
-    </button>
-    <div class="modal-dialog modal-lg" role="document" style="">
-        <div class="modal-content">
-            <div class="modal-body text-center">
-                <img class="mw-100" id="imageDisplay" src="">
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 @push('scripts')
 <script src="{{ asset('js/lightbox.js') }}"></script>
     <script>
         $(document).ready(function () {
-            $("#img-avatar").on('click', function () {
-                $("#imageDisplay").attr('src', $("#img-avatar").attr('src'));
-            });
-
             $('#btn-ganti-avatar').on('click', function () {
                 $('#input-avatar').click();
             });
