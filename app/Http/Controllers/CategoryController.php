@@ -75,17 +75,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if ($category->delete()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Kategori '.$category->name.' berhasil dihapus',
-            ]);
-        } else {
-            response()->json([
-                'success' => false,
-                'message' => 'Kategori '.$category->name.' gagal dihapus',
-            ]);
-        }
-
+        $category->delete();
+        alert()->success('Kategori '.$category->name.' berhasil dihapus', 'Berhasil');
+        return redirect()->back();
     }
 }

@@ -14,6 +14,7 @@ class CompanySeeder extends Seeder
     {
         Company::create([
             'id'            => 1,
+            'logo'          => 'public/logo/favicon.png',
             'name'          => 'MTravel',
             'email'         => 'admin@mtravel.lavinza.me',
             'description'   => 'MTravel merupakan perusahaan yang berjalan dibidang transportasi dan pariwisata dengan layanan paket wisata yang paling murah dibandingkan toko sebelah',

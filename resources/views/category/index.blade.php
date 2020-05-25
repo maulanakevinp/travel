@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title','Category')
 
 @section('content')
 <div class="container">
@@ -24,11 +25,12 @@
                                     <tr>
                                         <td>{{ $category->name }}</td>
                                         <td>
-                                            <a href="#modal" title="ubah" data-toggle="modal"
-                                                data-id="{{ $category->id }}" class="btn btn-sm btn-success ubah"><i
-                                                    class="fas fa-edit"></i></a>
-                                            <button class="btn btn-sm btn-danger hapus" data-id="{{ $category->id }}"
-                                                title="Hapus"><i class="fas fa-trash"></i></button>
+                                            <a href="#modal" title="ubah" data-toggle="modal" data-id="{{ $category->id }}" class="btn btn-sm btn-success ubah">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button class="btn btn-sm btn-danger hapus" data-id="{{ $category->id }}" title="Hapus">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -40,6 +42,10 @@
         </div>
     </div>
 </div>
+
+<form id="formHapus" method="POST">
+    @csrf @method('delete')
+</form>
 
 <!-- Modal -->
 <div class="modal fade" id="modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
@@ -101,26 +107,8 @@
                     })
                     .then((willDelete) => {
                         if (willDelete) {
-                            $.ajax({
-                                url: baseURL + '/category/' + id,
-                                type: 'delete',
-                                data: {
-                                    _token: _token,
-                                },
-                                success: function(result){
-                                    if (result.success) {
-                                        swal(result.message, {
-                                            icon: "success",
-                                        }).then((reload) => {
-                                            location.reload();
-                                        });
-                                    } else {
-                                        swal(result.message, {
-                                            icon: "error",
-                                        });
-                                    }
-                                }
-                            });
+                            $("#formHapus").attr('action', baseURL + "/category/" + id);
+                            $("#formHapus").submit();
                         } else {
                             swal.close();
                         }
