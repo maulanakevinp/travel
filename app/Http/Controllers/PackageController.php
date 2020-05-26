@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Package;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PackageController extends Controller
 {
@@ -14,7 +17,18 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
+        $packages = Package::orderBy('id', 'desc')->paginate(9);
+        return view('package.index', compact('packages'));
+    }
+
+    public function category(Category $category, $slug)
+    {
+        if ($slug == Str::slug($category->name)) {
+            $packages = Package::whereCategoryId($category->id)->orderBy('id', 'desc')->paginate(9);
+            return view('package.category', compact('category','packages'));
+        }
+
+        return abort(404);
     }
 
     /**
@@ -24,7 +38,7 @@ class PackageController extends Controller
      */
     public function create()
     {
-        //
+        return view('package.create');
     }
 
     /**
@@ -44,9 +58,13 @@ class PackageController extends Controller
      * @param  \App\Package  $package
      * @return \Illuminate\Http\Response
      */
-    public function show(Package $package)
+    public function show(Package $package, $slug)
     {
-        //
+        $packages = Package::whereCategoryId($package->category_id)->orderBy('id','desc')->paginate(3);
+        if (Str::slug($package->name) == $slug) {
+            return view('package.show', compact('package','packages'));
+        }
+        return abort(404);
     }
 
     /**
@@ -57,7 +75,7 @@ class PackageController extends Controller
      */
     public function edit(Package $package)
     {
-        //
+        return view('package.edit', compact('package'));
     }
 
     /**
@@ -80,6 +98,11 @@ class PackageController extends Controller
      */
     public function destroy(Package $package)
     {
-        //
+        foreach ($package->galleries as $gallery) {
+            File::delete(storage_path('app/'.$gallery->image));
+        }
+        $package->delete();
+        alert()->success('Paket wisata '. $package->name .' berhasil dihapus', 'Berhasil');
+        return redirect()->back();
     }
 }

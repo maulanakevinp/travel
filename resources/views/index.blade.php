@@ -74,7 +74,7 @@
                 <div class="row  justify-content-center">
                     @foreach($categories as $category)
                         <div class="col-lg-4 mb-3">
-                            <a href="{{ url('/') }}" class="card-link">
+                            <a href="{{ route('package.category',['category' => $category, 'slug' => Str::slug($category->name)]) }}" class="card-link">
                                 <div class="card wisata">
                                     <div class="card-body text-center">
                                         <h3 class="mb-0">{{ $category->name }}</h3>

@@ -21,6 +21,8 @@ Route::get('/', 'HomeController@index');
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/wisata/{package}/{slug}', 'PackageController@show')->name('package.show');
+Route::get('/paket-wisata/{category}/{slug}', 'PackageController@category')->name('package.category');
 
 Route::group(['middleware' => ['web', 'auth']], function () {
 
@@ -36,7 +38,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::resource('category', 'CategoryController');
         Route::resource('gallery', 'GalleryController');
         Route::resource('company', 'CompanyController');
-        Route::resource('package', 'PackageController');
+        Route::resource('package', 'PackageController')->except('show');
         Route::resource('order', 'OrderController');
         Route::resource('user', 'UserController');
 

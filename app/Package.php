@@ -17,4 +17,9 @@ class Package extends Model
     {
         return $this->hasMany('App\Order');
     }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
 }
