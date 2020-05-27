@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
             $table->string('via',16);
             $table->string('channel',16);
             $table->string('total');
-            $table->text('paymentNo');
+            $table->text('payment_no');
             $table->timestamp('expired');
             $table->string('status');
             $table->string('asal');

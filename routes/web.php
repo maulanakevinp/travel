@@ -29,9 +29,13 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('/pengaturan', 'UserController@pengaturan')->name('pengaturan');
     Route::get('/profil', 'UserController@profil')->name('profil');
     Route::get('/edit-profil', 'UserController@editProfil')->name('edit-profil');
+    Route::get('/checkout/{package}/{slug}', 'OrderController@create')->name('order.create');
+    Route::get('/order/{order}', 'OrderController@show')->name('order.show');
+    Route::post('/order/{package}', 'OrderController@store')->name('order.store');
     Route::post('/update-avatar', 'UserController@updateAvatar')->name('update-avatar');
     Route::patch('/update-pengaturan', 'UserController@updatePengaturan')->name('update-pengaturan');
     Route::patch('/update-profil', 'UserController@updateProfil')->name('update-profil');
+
 
     Route::group(['middleware' => ['can:admin']], function () {
 
@@ -39,12 +43,8 @@ Route::group(['middleware' => ['web', 'auth']], function () {
         Route::resource('gallery', 'GalleryController');
         Route::resource('company', 'CompanyController');
         Route::resource('package', 'PackageController')->except('show');
-        Route::resource('order', 'OrderController');
+        Route::resource('order', 'OrderController')->except('create','store','show');
         Route::resource('user', 'UserController');
-
-    });
-
-    Route::group(['middleware' => ['can:member']], function () {
 
     });
 

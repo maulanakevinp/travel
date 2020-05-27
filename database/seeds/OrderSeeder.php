@@ -19,7 +19,7 @@ class OrderSeeder extends Seeder
             'via'               => 'qris',
             'channel'           => 'linkaja',
             'total'             => '12499',
-            'paymentNo'         => 'asdflahaleuorhalskjdfhlaksjfh',
+            'payment_no'         => 'asdflahaleuorhalskjdfhlaksjfh',
             'expired'           => '2020-05-22 21:28:20',
             'status'            => 'pending',
             'asal'              => 'Bondowoso',

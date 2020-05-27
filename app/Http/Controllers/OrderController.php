@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
+use App\Helpers\Ipaymu;
 use App\Order;
+use App\Package;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    protected $ipaymu;
+    public function __construct() {
+        $company = Company::find(1);
+        $this->ipaymu = new Ipaymu($company->api_key,$company->va);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +24,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $ipaymu = $this->ipaymu;
+        return view('order.index', compact('ipaymu'));
     }
 
     /**
@@ -22,9 +33,12 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Package $package, $slug)
     {
-        //
+        if ($slug != Str::slug($package->name)) {
+            return abort(404);
+        }
+        return view('order.create', compact('package'));
     }
 
     /**
@@ -33,9 +47,49 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Package $package)
     {
-        //
+        $request->validate([
+            'tanggal_berangkat' => ['required', 'date', 'after:now'],
+            'tanggal_pulang'    => ['required', 'date', 'after:tanggal_berangkat'],
+            'quantity'          => ['required', 'numeric', 'min:1'],
+            'paymentMethod'     => ['required', 'string', 'max:4'],
+            'paymentChannel'    => ['required', 'string', 'max:8'],
+            'asal'              => ['required', 'string'],
+        ]);
+
+        $this->ipaymu->setBuyer([
+            'name'      => auth()->user()->name,
+            'phone'     => auth()->user()->phone,
+            'email'     => auth()->user()->email
+        ]);
+
+        $this->ipaymu->setCart([
+            'amount'            => $package->price * $request->quantity,
+            'description'       => $request->quantity.' Tiket '.$package->name,
+            'paymentMethod'     => $request->paymentMethod,
+            'paymentChannel'    => $request->paymentChannel,
+            'referenceId'       => date('YmdHis')
+        ]);
+
+        $ipaymu = $this->ipaymu->checkout();
+        $order = Order::create([
+            'user_id'           => auth()->user()->id,
+            'package_id'        => $package->id,
+            'transaction_id'    => $ipaymu['Data']['TransactionId'],
+            'via'               => $request->paymentMethod,
+            'channel'           => $request->paymentChannel,
+            'total'             => $package->price * $request->quantity,
+            'payment_no'        => $ipaymu['Data']['PaymentNo'],
+            'expired'           => $ipaymu['Data']['Expired'],
+            'status'            => 'Pending',
+            'qty'               => $request->quantity,
+            'asal'              => $request->asal,
+            'tanggal_berangkat' => date('Y-m-d H:i:s',strtotime($request->tanggal_berangkat)),
+            'tanggal_pulang'    => date('Y-m-d H:i:s',strtotime($request->tanggal_pulang)),
+        ]);
+
+        return redirect()->route('order.show', ['order' => $order]);
     }
 
     /**
@@ -46,7 +100,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        return view('order.show', compact('order'));
     }
 
     /**

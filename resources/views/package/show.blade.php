@@ -46,7 +46,7 @@
                     <h4>Harga : Rp.
                         {{ substr(number_format($package->price, 2, ',', '.'),0,-3) }}
                     </h4>
-                    <a href="" class="btn btn-success">Pesan Tiket</a>
+                    <a href="{{ route('order.create',['package' => $package , 'slug' => Str::slug($package->name)]) }}" class="btn btn-success">Pesan Tiket</a>
                 </div>
             </div>
 
