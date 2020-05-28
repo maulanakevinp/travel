@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title',$package->name)
+@section('title',$tour->name)
 
 @section('styles')
 <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
@@ -13,9 +13,9 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-dark">
             <li class="breadcrumb-item"><a
-                    href="{{ route('package.category',['category' => $package->category, 'slug' => Str::slug($package->category->name)]) }}">{{ $package->category->name }}</a>
+                    href="{{ route('tour.package',['package' => $tour->package, 'slug' => Str::slug($tour->package->name)]) }}">{{ $tour->package->name }}</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">{{ $package->name }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ $tour->name }}</li>
         </ol>
     </nav>
     <div class="row mt-5">
@@ -23,18 +23,18 @@
             <div class="card bg-dark shadow">
                 <div class="card-body">
                     <div class="owl-carousel">
-                        @foreach($package->galleries as $gallery)
+                        @foreach($tour->galleries as $gallery)
                             <a href="{{ asset(Storage::url($gallery->image)) }}" data-lightbox="gallery"
-                                data-title="{{ $package->name }}" @if($gallery->description)
+                                data-title="{{ $tour->name }}" @if($gallery->description)
                                 data-alt="{{ $gallery->description }}" @endif>
                                 <img src="{{ asset(Storage::url($gallery->image)) }}" class="mw-100"
-                                    alt="Gambar {{ $package->name }} {{ $gallery->id }}">
+                                    alt="Gambar {{ $tour->name }} {{ $gallery->id }}">
                             </a>
                         @endforeach
                     </div>
-                    <h1 class="font-weight-bold text-center my-3">{{ $package->name }}</h1>
+                    <h1 class="font-weight-bold text-center my-3">{{ $tour->name }}</h1>
                     <div id="description">
-                        {!! $package->description !!}
+                        {!! $tour->description !!}
                     </div>
                 </div>
             </div>
@@ -44,9 +44,9 @@
             <div class="card bg-dark shadow mb-3">
                 <div class="card-body">
                     <h4>Harga : Rp.
-                        {{ substr(number_format($package->price, 2, ',', '.'),0,-3) }}
+                        {{ substr(number_format($tour->price, 2, ',', '.'),0,-3) }}
                     </h4>
-                    <a href="{{ route('order.create',['package' => $package , 'slug' => Str::slug($package->name)]) }}" class="btn btn-success">Pesan Tiket</a>
+                    <a href="{{ route('order.create',['tour' => $tour , 'slug' => Str::slug($tour->name)]) }}" class="btn btn-success">Pesan Tiket</a>
                 </div>
             </div>
 
@@ -54,8 +54,8 @@
                 <div class="card-body">
                     <h4>Paket wisata lainnya</h4>
                     <ul class="list-unstyled">
-                        @foreach($packages as $item)
-                            @if($item->id != $package->id)
+                        @foreach($tours as $item)
+                            @if($item->id != $tour->id)
                                 <hr>
                                 <li class="media">
                                     <div class="mr-3"
@@ -66,7 +66,7 @@
                                         <div class="block-with-text">
                                             {!! $item->description !!}
                                         </div>
-                                        <a href="{{ route('package.show',['package' => $item , 'slug' => Str::slug($item->name)]) }}"
+                                        <a href="{{ route('tour.show',['tour' => $item , 'slug' => Str::slug($item->name)]) }}"
                                             class="btn btn-sm btn-primary float-right">Lihat</a>
                                     </div>
                                 </li>

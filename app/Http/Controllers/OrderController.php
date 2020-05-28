@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Company;
 use App\Helpers\Ipaymu;
 use App\Order;
-use App\Package;
+use App\Tour;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -33,12 +33,12 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Package $package, $slug)
+    public function create(Tour $tour, $slug)
     {
-        if ($slug != Str::slug($package->name)) {
+        if ($slug != Str::slug($tour->name)) {
             return abort(404);
         }
-        return view('order.create', compact('package'));
+        return view('order.create', compact('tour'));
     }
 
     /**
@@ -47,7 +47,7 @@ class OrderController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Package $package)
+    public function store(Request $request, Tour $tour)
     {
         $request->validate([
             'tanggal_berangkat' => ['required', 'date', 'after:now'],
@@ -65,8 +65,8 @@ class OrderController extends Controller
         ]);
 
         $this->ipaymu->setCart([
-            'amount'            => $package->price * $request->quantity,
-            'description'       => $request->quantity.' Tiket '.$package->name,
+            'amount'            => $tour->price * $request->quantity,
+            'description'       => $request->quantity.' Tiket '.$tour->name,
             'paymentMethod'     => $request->paymentMethod,
             'paymentChannel'    => $request->paymentChannel,
             'referenceId'       => date('YmdHis')
@@ -75,11 +75,11 @@ class OrderController extends Controller
         $ipaymu = $this->ipaymu->checkout();
         $order = Order::create([
             'user_id'           => auth()->user()->id,
-            'package_id'        => $package->id,
+            'tour_id'           => $tour->id,
             'transaction_id'    => $ipaymu['Data']['TransactionId'],
             'via'               => $request->paymentMethod,
             'channel'           => $request->paymentChannel,
-            'total'             => $package->price * $request->quantity,
+            'total'             => $tour->price * $request->quantity,
             'payment_no'        => $ipaymu['Data']['PaymentNo'],
             'expired'           => $ipaymu['Data']['Expired'],
             'status'            => 'Pending',

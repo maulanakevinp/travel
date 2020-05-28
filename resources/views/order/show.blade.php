@@ -10,13 +10,13 @@
                     <ul class="list-unstyled">
                         <li class="media">
                             <div class="mr-3"
-                                style="background-size: cover ;height: 64px; width: 64px;background-image: url('{{ asset(Storage::url($order->package->galleries[0]->image)) }}')">
+                                style="background-size: cover ;height: 64px; width: 64px;background-image: url('{{ asset(Storage::url($order->tour->galleries[0]->image)) }}')">
                             </div>
                             <div class="media-body">
-                                <h5 class="mt-0 mb-1">{{ $order->package->name }}</h5>
-                                <h6 class="mt-0 mb-1">Harga : Rp. {{ substr(number_format($order->package->price, 2, ',', '.'),0,-3) }}</h6>
+                                <h5 class="mt-0 mb-1">{{ $order->tour->name }}</h5>
+                                <h6 class="mt-0 mb-1">Harga : Rp. {{ substr(number_format($order->tour->price, 2, ',', '.'),0,-3) }}</h6>
                                 <div class="block-with-text">
-                                    {!! $order->package->description !!}
+                                    {!! $order->tour->description !!}
                                 </div>
                             </div>
                         </li>

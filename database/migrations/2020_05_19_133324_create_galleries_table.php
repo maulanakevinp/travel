@@ -15,12 +15,12 @@ class CreateGalleriesTable extends Migration
     {
         Schema::create('galleries', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('package_id')->nullable();
+            $table->unsignedBigInteger('tour_id')->nullable();
             $table->unsignedBigInteger('company_id')->nullable();
             $table->string('image', 64);
             $table->text('description')->nullable();
 
-            $table->foreign('package_id')->references('id')->on('packages')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('tour_id')->references('id')->on('tours')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade')->onUpdate('cascade');
         });
     }

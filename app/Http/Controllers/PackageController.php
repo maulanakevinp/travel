@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
 use App\Package;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use Illuminate\Validation\Rule;
 
 class PackageController extends Controller
 {
@@ -17,28 +15,8 @@ class PackageController extends Controller
      */
     public function index()
     {
-        $packages = Package::orderBy('id', 'desc')->paginate(9);
+        $packages = Package::all();
         return view('package.index', compact('packages'));
-    }
-
-    public function category(Category $category, $slug)
-    {
-        if ($slug == Str::slug($category->name)) {
-            $packages = Package::whereCategoryId($category->id)->orderBy('id', 'desc')->paginate(9);
-            return view('package.category', compact('category','packages'));
-        }
-
-        return abort(404);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('package.create');
     }
 
     /**
@@ -49,7 +27,14 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name'  => ['required', 'unique:packages,name']
+        ]);
+
+        Package::create($data);
+
+        alert()->success('Paket '.$request->name.' berhasil ditambahkan', 'Berhasil');
+        return redirect()->back();
     }
 
     /**
@@ -58,24 +43,9 @@ class PackageController extends Controller
      * @param  \App\Package  $package
      * @return \Illuminate\Http\Response
      */
-    public function show(Package $package, $slug)
+    public function show(Package $package)
     {
-        $packages = Package::whereCategoryId($package->category_id)->orderBy('id','desc')->paginate(3);
-        if (Str::slug($package->name) == $slug) {
-            return view('package.show', compact('package','packages'));
-        }
-        return abort(404);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Package  $package
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Package $package)
-    {
-        return view('package.edit', compact('package'));
+        return response()->json($package);
     }
 
     /**
@@ -87,7 +57,14 @@ class PackageController extends Controller
      */
     public function update(Request $request, Package $package)
     {
-        //
+        $data = $request->validate([
+            'name'  => ['required', Rule::unique('packages', 'name')->ignore($package->name),]
+        ]);
+
+        $package->update($data);
+        alert()->success('Paket '.$package->name.' berhasil diperbarui', 'Berhasil');
+        return redirect()->back();
+
     }
 
     /**
@@ -98,11 +75,8 @@ class PackageController extends Controller
      */
     public function destroy(Package $package)
     {
-        foreach ($package->galleries as $gallery) {
-            File::delete(storage_path('app/'.$gallery->image));
-        }
         $package->delete();
-        alert()->success('Paket wisata '. $package->name .' berhasil dihapus', 'Berhasil');
+        alert()->success('Paket '.$package->name.' berhasil dihapus', 'Berhasil');
         return redirect()->back();
     }
 }

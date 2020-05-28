@@ -9,9 +9,9 @@ class Gallery extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public function package()
+    public function tour()
     {
-        return $this->belongsTo('App\Package');
+        return $this->belongsTo('App\Tour');
     }
 
     public function company()

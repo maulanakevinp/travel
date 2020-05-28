@@ -12,11 +12,7 @@ class PackageSeeder extends Seeder
      */
     public function run()
     {
-        Package::create([
-            'category_id'   => 1,
-            'name'          => 'Wisata Papuma',
-            'price'         => '5000',
-            'description'   => 'Paket wisata papuma murah fasilitas lengkap mulai 5000'
-        ]);
+        Package::create(['name' => 'Reguler']);
+        Package::create(['name' => 'Paket Khusus']);
     }
 }

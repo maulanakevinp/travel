@@ -14,7 +14,7 @@ class OrderSeeder extends Seeder
     {
         Order::create([
             'user_id'           => 2,
-            'package_id'        => 1,
+            'tour_id'        => 1,
             'transaction_id'    => 851420,
             'via'               => 'qris',
             'channel'           => 'linkaja',

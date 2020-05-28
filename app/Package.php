@@ -6,20 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Package extends Model
 {
+    public $timestamps = false;
     protected $guarded = [];
 
-    public function galleries()
+    public function tours()
     {
-        return $this->hasMany('App\Gallery');
-    }
-
-    public function orders()
-    {
-        return $this->hasMany('App\Order');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo('App\Category');
+        return $this->hasMany('App\Tour');
     }
 }

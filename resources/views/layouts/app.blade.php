@@ -98,8 +98,8 @@
                                     <a class="dropdown-item {{ Request::segment(1) == "pengaturan" ? "active" : "" }}" href="{{ route('pengaturan') }}">{{ __('Pengaturan') }}</a>
                                     @can('admin')
                                         <a class="dropdown-item {{ Request::segment(1) == "company" ? "active" : "" }}" href="{{ route('company.index') }}">{{ __('Company') }}</a>
-                                        <a class="dropdown-item {{ Request::segment(1) == "category" ? "active" : "" }}" href="{{ route('category.index') }}">{{ __('Category') }}</a>
-                                        <a class="dropdown-item {{ Request::segment(1) == "package" ? "active" : "" }}" href="{{ route('package.index') }}">{{ __('Paket Wisata') }}</a>
+                                        <a class="dropdown-item {{ Request::segment(1) == "package" ? "active" : "" }}" href="{{ route('package.index') }}">{{ __('Paket') }}</a>
+                                        <a class="dropdown-item {{ Request::segment(1) == "tour" ? "active" : "" }}" href="{{ route('tour.index') }}">{{ __('Wisata') }}</a>
                                         <a class="dropdown-item {{ Request::segment(1) == "order" ? "active" : "" }}" href="{{ route('order.index') }}">{{ __('Transaksi') }}</a>
                                     @endcan
                                     <div class="dropdown-divider"></div>

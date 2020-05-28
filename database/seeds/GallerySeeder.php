@@ -28,17 +28,17 @@ class GallerySeeder extends Seeder
         ]);
 
         Gallery::create([
-            'package_id'    => 1,
+            'tour_id'    => 1,
             'image'         => 'public/gallery/slide-1.png'
         ]);
 
         Gallery::create([
-            'package_id'    => 1,
+            'tour_id'    => 1,
             'image'         => 'public/gallery/slide-2.png'
         ]);
 
         Gallery::create([
-            'package_id'    => 1,
+            'tour_id'    => 1,
             'image'         => 'public/gallery/slide-3.png'
         ]);
     }

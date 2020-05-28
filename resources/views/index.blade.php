@@ -72,12 +72,12 @@
             <div class="card-body">
                 <h2 class="text-center font-weight-bold mb-5">Paket Wisata</h2>
                 <div class="row  justify-content-center">
-                    @foreach($categories as $category)
+                    @foreach($packages as $package)
                         <div class="col-lg-4 mb-3">
-                            <a href="{{ route('package.category',['category' => $category, 'slug' => Str::slug($category->name)]) }}" class="card-link">
+                            <a href="{{ route('tour.package',['package' => $package, 'slug' => Str::slug($package->name)]) }}" class="card-link">
                                 <div class="card wisata">
                                     <div class="card-body text-center">
-                                        <h3 class="mb-0">{{ $category->name }}</h3>
+                                        <h3 class="mb-0">{{ $package->name }}</h3>
                                     </div>
                                 </div>
                             </a>

@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container">
-    <form action="{{ route('order.store',$package) }}" method="POST">
+    <form action="{{ route('order.store',$tour) }}" method="POST">
         @csrf
         <div class="row">
             <div class="col-lg-8 mb-3">
@@ -14,13 +14,13 @@
                         <ul class="list-unstyled">
                             <li class="media">
                                 <div class="mr-3"
-                                    style="background-size: cover ;height: 64px; width: 64px;background-image: url('{{ asset(Storage::url($package->galleries[0]->image)) }}')">
+                                    style="background-size: cover ;height: 64px; width: 64px;background-image: url('{{ asset(Storage::url($tour->galleries[0]->image)) }}')">
                                 </div>
                                 <div class="media-body">
-                                    <h5 class="mt-0 mb-1">{{ $package->name }}</h5>
-                                    <h6 class="mt-0 mb-1">Harga : Rp. {{ substr(number_format($package->price, 2, ',', '.'),0,-3) }}</h6>
+                                    <h5 class="mt-0 mb-1">{{ $tour->name }}</h5>
+                                    <h6 class="mt-0 mb-1">Harga : Rp. {{ substr(number_format($tour->price, 2, ',', '.'),0,-3) }}</h6>
                                     <div class="block-with-text">
-                                        {!! $package->description !!}
+                                        {!! $tour->description !!}
                                     </div>
                                 </div>
                             </li>
@@ -110,7 +110,7 @@
                 <input type="text" name="paymentMethod" id="paymentMethod" style="display: none" value="va">
                 <div class="card shadow bg-dark mt-3">
                     <div class="card-body">
-                        <h4>Total : Rp. <span id="total">{{ $package->price }}</span></h4>
+                        <h4>Total : Rp. <span id="total">{{ $tour->price }}</span></h4>
                         <button class="btn btn-primary btn-block mt-3" type="submit">Bayar</button>
                     </div>
                 </div>
@@ -137,7 +137,7 @@
         });
 
         $("#quantity").change(function(){
-            $("#total").html(formatNumber($("#quantity").val() * {{ $package->price }}));
+            $("#total").html(formatNumber($("#quantity").val() * {{ $tour->price }}));
         });
 
     });
