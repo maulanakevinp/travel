@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Company;
 use App\Helpers\Ipaymu;
 use App\Order;
+use App\Rules\Tanggal;
 use App\Tour;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
@@ -50,14 +52,16 @@ class OrderController extends Controller
     public function store(Request $request, Tour $tour)
     {
         $request->validate([
-            'tanggal_berangkat' => ['required', 'date', 'after:now'],
-            'tanggal_pulang'    => ['required', 'date', 'after:tanggal_berangkat'],
+            'tanggal_berangkat' => ['required', 'date', 'after:now', new Tanggal($request->tanggal_berangkat, $request->tanggal_pulang)],
+            'tanggal_pulang'    => ['required', 'date', 'after:tanggal_berangkat', new Tanggal($request->tanggal_berangkat, $request->tanggal_pulang)],
             'quantity'          => ['required', 'numeric', 'min:1'],
             'paymentMethod'     => ['required', 'string', 'max:4'],
             'paymentChannel'    => ['required', 'string', 'max:8'],
             'asal'              => ['required', 'string'],
+            'keterangan'        => ['nullable', 'string'],
         ]);
 
+        $amount = $tour->price * $request->quantity * Carbon::parse($request->tanggal_pulang)->diffInDays(Carbon::parse($request->tanggal_berangkat));
         $this->ipaymu->setBuyer([
             'name'      => auth()->user()->name,
             'phone'     => auth()->user()->phone,
@@ -65,7 +69,7 @@ class OrderController extends Controller
         ]);
 
         $this->ipaymu->setCart([
-            'amount'            => $tour->price * $request->quantity,
+            'amount'            => $amount,
             'description'       => $request->quantity.' Tiket '.$tour->name,
             'paymentMethod'     => $request->paymentMethod,
             'paymentChannel'    => $request->paymentChannel,
@@ -79,12 +83,13 @@ class OrderController extends Controller
             'transaction_id'    => $ipaymu['Data']['TransactionId'],
             'via'               => $request->paymentMethod,
             'channel'           => $request->paymentChannel,
-            'total'             => $tour->price * $request->quantity,
+            'total'             => $amount,
             'payment_no'        => $ipaymu['Data']['PaymentNo'],
             'expired'           => $ipaymu['Data']['Expired'],
             'status'            => 'Pending',
             'qty'               => $request->quantity,
             'asal'              => $request->asal,
+            'keterangan'        => $request->keterangan,
             'tanggal_berangkat' => date('Y-m-d H:i:s',strtotime($request->tanggal_berangkat)),
             'tanggal_pulang'    => date('Y-m-d H:i:s',strtotime($request->tanggal_pulang)),
         ]);

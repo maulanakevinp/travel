@@ -30,6 +30,7 @@ class CreateOrdersTable extends Migration
             $table->timestamp('tanggal_pulang')->nullable();
             $table->tinyInteger('rating')->nullable();
             $table->text('testimoni')->nullable();
+            $table->text('keterangan')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

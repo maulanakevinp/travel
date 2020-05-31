@@ -26,19 +26,21 @@
                             </li>
                         </ul>
                         <div class="row">
-                            <div class="col-md-5 mb-3">
+                            <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="tanggal_berangkat">Tanggal Berangkat</label>
-                                    <input type="datetime-local" id="tanggal_berangkat" class="form-control" name="tanggal_berangkat" value="{{ old('tanggal_berangkat') }}">
+                                    <input type="datetime-local" id="tanggal_berangkat" class="form-control" name="tanggal_berangkat" value="{{ old('tanggal_berangkat', date('Y-m-d\TH:i', strtotime("+1 day"))) }}" min="{{ date('Y-m-d\TH:i') }}">
+                                    <span class="text-muted">bulan/tanggal/tahun, jam:menit waktu</span>
                                 </div>
                             </div>
-                            <div class="col-md-5 mb-3">
+                            <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="tanggal_pulang">Tanggal Pulang</label>
-                                    <input type="datetime-local" id="tanggal_pulang" class="form-control" name="tanggal_pulang" value="{{ old('tanggal_pulang') }}">
+                                    <input type="datetime-local" id="tanggal_pulang" class="form-control" name="tanggal_pulang" value="{{ old('tanggal_pulang', date('Y-m-d\TH:i', strtotime("+2 day"))) }}" min="{{ date('Y-m-d\TH:i', strtotime("+1 day")) }}">
+                                    <span class="text-muted">bulan/tanggal/tahun, jam:menit waktu</span>
                                 </div>
                             </div>
-                            <div class="col-md-2 mb-3">
+                            <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="quantity">Quantity</label>
                                     <input type="number" name="quantity" id="quantity" class="form-control" value="{{ old('quantity', 1) }}">
@@ -48,6 +50,10 @@
                         <div class="form-group">
                             <label for="asal">Asal</label>
                             <input type="text" name="asal" id="asal" class="form-control" value="{{ old('asal') }}" placeholder="Tempat anda berasal">
+                        </div>
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan</label>
+                            <textarea name="keterangan" id="keterangan" class="form-control" rows="3" style="resize: none" placeholder="Keterangan tambahan">{{ old('keterangan') }}</textarea>
                         </div>
                     </div>
                 </div>
@@ -123,6 +129,8 @@
 
 @push('scripts')
 <script>
+    let days = 1;
+    const price = parseInt($("#total").html());
     function formatNumber(num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
     }
@@ -137,7 +145,30 @@
         });
 
         $("#quantity").change(function(){
-            $("#total").html(formatNumber($("#quantity").val() * {{ $tour->price }}));
+            if(this.value < 1){
+                this.value = 1;
+            }
+            days = Math.ceil(Math.abs(new Date($("#tanggal_berangkat").val()) - new Date($("#tanggal_pulang").val())) / (1000 * 60 * 60 * 24));
+            if (isNaN(days)) {
+                days = 1;
+            }
+            $("#total").html(formatNumber($("#quantity").val() * price * days));
+        });
+
+        $("#tanggal_berangkat").change(function(){
+            days = Math.ceil(Math.abs(new Date($("#tanggal_berangkat").val()) - new Date($("#tanggal_pulang").val())) / (1000 * 60 * 60 * 24));
+            if (isNaN(days)) {
+                days = 1;
+            }
+            $("#total").html(formatNumber($("#quantity").val() * price * days));
+        });
+
+        $("#tanggal_pulang").change(function(){
+            days = Math.ceil(Math.abs(new Date($("#tanggal_berangkat").val()) - new Date($("#tanggal_pulang").val())) / (1000 * 60 * 60 * 24));
+            if (isNaN(days)) {
+                days = 1;
+            }
+            $("#total").html(formatNumber($("#quantity").val() * price * days));
         });
 
     });
