@@ -18,11 +18,12 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('role_id')->default(2);
             $table->string('name', 32);
             $table->string('phone', 16);
+            $table->string('phone_emergency', 16)->nullable();
             $table->string('email')->unique();
             $table->string('address');
             $table->string('avatar', 64)->default('noavatar.jpg');
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->default(bcrypt('password'));
             $table->rememberToken();
             $table->timestamps();
 

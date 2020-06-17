@@ -4,7 +4,6 @@ namespace App\Helpers;
 
 class Ipaymu
 {
-
     protected $apiKey, $va, $notifyUrl;
     protected $buyer = array();
     protected $cart = array();

@@ -14,17 +14,19 @@
     <meta name="app-name" content="{{ config('app.name') }}">
     <meta name="base-url" content="{{ url('') }}">
     <meta name="latitude" content="{{ $company->latitude }}">
+    <meta name="logo" content="{{ asset(Storage::url($company->logo)) }}">
     <meta name="longitude" content="{{ $company->longitude }}">
 
-    <title>@yield('title') - {{ config('app.name') }}</title>
+    <title>@yield('title') - {{ $company->name }}</title>
     <link rel="shortcut icon" href="{{ asset(Storage::url($company->logo)) }}" type="image/x-icon">
 
     <!-- Fonts -->
-    <script src="https://kit.fontawesome.com/5731b34870.js" crossorigin="anonymous"></script>
+    <link href="{{ asset('@fortawesome/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
+    {{-- <script src="https://kit.fontawesome.com/5731b34870.js" crossorigin="anonymous"></script> --}}
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
 
     <style>
         html {
@@ -39,8 +41,8 @@
     <div id="app" class="text-white">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm font-weight-bold fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand text-monospace" href="{{ url('/') }}">
+                    {{ $company->name }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -53,21 +55,24 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ url('/#tentang-kami') }}">{{ __('Tentang Kami') }}</a>
+                                href="{{ url('/#about') }}">{{ __('About') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ url('/#paket-wisata') }}">{{ __('Paket Wisata') }}</a>
+                                href="{{ url('/#tour-package') }}">{{ __('Tour Package') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/#portofolio') }}">{{ __('Portofolio') }}</a>
                         </li>
                         @if(App\Order::whereRating(5)->count() > 2)
                             <li class="nav-item">
                                 <a class="nav-link"
-                                    href="{{ url('/#testimoni') }}">{{ __('Testimoni') }}</a>
+                                    href="{{ url('/#testimonial') }}">{{ __('Testimonial') }}</a>
                             </li>
                         @endif
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ url('/#hubungi-kami') }}">{{ __('Hubungi Kami') }}</a>
+                                href="{{ url('/#contact') }}">{{ __('Contact') }}</a>
                         </li>
 
                     </ul>
@@ -75,6 +80,13 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
+                        {{-- <li class="nav-item dropdown pt-1">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('images/indonesia.svg') }}" alt=""></a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item {{ Request::segment(1) == "id" ? "active" : "" }}" href="{{ route('local','id') }}"><img src="{{ asset('images/indonesia.svg') }}" alt=""></a></a>
+                                <a class="dropdown-item {{ Request::segment(1) == "en" ? "active" : "" }}" href="{{ route('local','id') }}"><img src="{{ asset('images/en.svg') }}" alt="" width="28" height="21"></a></a>
+                            </div>
+                        </li> --}}
                         @guest
                             <li class="nav-item {{ Request::segment(1) == "login" ? "active" : "" }}">
                                 <a class="nav-link"
@@ -94,13 +106,15 @@
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item {{ Request::segment(1) == "profil" ? "active" : "" }}" href="{{ route('profil') }}">{{ __('Profil') }}</a>
-                                    <a class="dropdown-item {{ Request::segment(1) == "pengaturan" ? "active" : "" }}" href="{{ route('pengaturan') }}">{{ __('Pengaturan') }}</a>
+                                    <a class="dropdown-item {{ Request::segment(1) == "profil" ? "active" : "" }}" href="{{ route('profile') }}">{{ __('Profile') }}</a>
+                                    <a class="dropdown-item {{ Request::segment(1) == "pengaturan" ? "active" : "" }}" href="{{ route('setting') }}">{{ __('Setting') }}</a>
                                     @can('admin')
+                                        <a class="dropdown-item {{ Request::segment(1) == "user" ? "active" : "" }}"    href="{{ route('user.index') }}">{{ __('Users') }}</a>
                                         <a class="dropdown-item {{ Request::segment(1) == "company" ? "active" : "" }}" href="{{ route('company.index') }}">{{ __('Company') }}</a>
-                                        <a class="dropdown-item {{ Request::segment(1) == "package" ? "active" : "" }}" href="{{ route('package.index') }}">{{ __('Paket') }}</a>
-                                        <a class="dropdown-item {{ Request::segment(1) == "tour" ? "active" : "" }}" href="{{ route('tour.index') }}">{{ __('Wisata') }}</a>
-                                        <a class="dropdown-item {{ Request::segment(1) == "order" ? "active" : "" }}" href="{{ route('order.index') }}">{{ __('Transaksi') }}</a>
+                                        <a class="dropdown-item {{ Request::segment(1) == "gallery" ? "active" : "" }}" href="{{ route('gallery.index') }}">{{ __('Gallery') }}</a>
+                                        <a class="dropdown-item {{ Request::segment(1) == "package" ? "active" : "" }}" href="{{ route('package.index') }}">{{ __('Package') }}</a>
+                                        <a class="dropdown-item {{ Request::segment(1) == "tour" ? "active" : "" }}"    href="{{ route('tour.index') }}">{{ __('Tour') }}</a>
+                                        <a class="dropdown-item {{ Request::segment(1) == "order" ? "active" : "" }}"   href="{{ route('order.index') }}">{{ __('Transaction') }}</a>
                                     @endcan
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

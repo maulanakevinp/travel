@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Package')
+@section('title', __('Package'))
 
 @section('content')
 <div class="container">
@@ -8,7 +8,7 @@
             @include('layouts.components.alert')
             <div class="card bg-dark">
                 <div class="card-header">
-                    <h5 class="m-0 pt-1 font-weight-bold float-left">Package</h5>
+                    <h5 class="m-0 pt-1 font-weight-bold float-left">{{ __('Package') }}</h5>
                     <a id="tambah" href="#modal" title="Tambah" class="btn btn-sm btn-success float-right" data-toggle="modal"><i class="fas fa-plus"></i></a>
                 </div>
                 <div class="card-body">
@@ -16,8 +16,8 @@
                         <table class="table text-white">
                             <thead>
                                 <tr>
-                                    <th>Nama</th>
-                                    <th>Opsi</th>
+                                    <th>{{ __('Name') }}</th>
+                                    <th>{{ __('Option') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -25,10 +25,10 @@
                                     <tr>
                                         <td>{{ $package->name }}</td>
                                         <td>
-                                            <a href="#modal" title="ubah" data-toggle="modal" data-id="{{ $package->id }}" class="btn btn-sm btn-success ubah">
+                                            <a href="#modal" title="edit" data-toggle="modal" data-id="{{ $package->id }}" class="btn btn-sm btn-success edit">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button class="btn btn-sm btn-danger hapus" data-id="{{ $package->id }}" title="Hapus">
+                                            <button class="btn btn-sm btn-danger delete" data-id="{{ $package->id }}" title="{{ __('Delete') }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
@@ -43,7 +43,7 @@
     </div>
 </div>
 
-<form id="formHapus" method="POST">
+<form id="formdelete" method="POST">
     @csrf @method('delete')
 </form>
 
@@ -61,11 +61,11 @@
             <form id="formPackage" method="POST">
                 @csrf @method('post')
                 <div class="modal-body">
-                    <input type="text" name="name" id="name" class="form-control" placeholder="Masukkan nama kategori">
+                    <input type="text" name="name" id="name" class="form-control" placeholder="{{ __('Enter a package name') }}">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
+                    <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
                 </div>
             </form>
         </div>
@@ -83,8 +83,8 @@
                 $("#formPackage > input[name='_method']").val('post');
             });
 
-            $(".ubah").click(function(){
-                $("#modalLabel").html('Ubah Paket');
+            $(".edit").click(function(){
+                $("#modalLabel").html('edit Paket');
                 $("#formPackage")[0].reset();
                 $("#formPackage").attr('action', baseURL + "/package/" + $(this).data('id'));
                 $("#formPackage > input[name='_method']").val('put');
@@ -93,22 +93,21 @@
                 });
             });
 
-            $(".hapus").click(function () {
+            $(".delete").click(function () {
                 const id = $(this).data('id');
                 let name;
                 $.getJSON(baseURL + "/package/" + id, function(data){
-                    name = data.name;
                     swal({
-                        title: "Apakah anda yakin?",
-                        text: "Setelah dihapus, " + name + " tidak akan dapat dipulihkan",
+                        title: "{{ __('Are you sure?') }}",
+                        text: "{{ __('After deleted, ') }}" + data.name + " {{ __('cannot be recovered') }}",
                         icon: "warning",
                         buttons: true,
                         dangerMode: true,
                     })
                     .then((willDelete) => {
                         if (willDelete) {
-                            $("#formHapus").attr('action', baseURL + "/package/" + id);
-                            $("#formHapus").submit();
+                            $("#formdelete").attr('action', baseURL + "/package/" + id);
+                            $("#formdelete").submit();
                         } else {
                             swal.close();
                         }

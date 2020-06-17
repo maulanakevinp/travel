@@ -29,48 +29,40 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        $validator = Validator::make($request->all(),[
-            'logo'                  => ['nullable', 'image', 'max:2048'],
-            'nama'                  => ['required', 'string', 'max:32'],
-            'email'                 => ['required', 'email', 'max:32'],
-            'deskripsi'             => ['required', 'string'],
-            'alamat'                => ['required', 'string'],
-            'testimonial'           => ['required', 'string'],
-            'nomor_telepon'         => ['required', 'digits_between:6,13'],
-            'nomor_whatsapp'        => ['required', 'digits_between:6,13'],
-            'nomor_virtual_account' => ['required', 'digits:16'],
-            'api_key'               => ['required', 'string', 'max:64'],
-            'latitude'              => ['required', 'numeric'],
-            'longitude'             => ['required', 'numeric'],
+        $request->validate([
+            'logo'              => ['nullable', 'image', 'max:2048'],
+            'name'              => ['required', 'string', 'max:32'],
+            'email'             => ['required', 'email', 'max:32'],
+            'description'       => ['required', 'string'],
+            'address'           => ['required', 'string'],
+            'testimonial'       => ['required', 'string'],
+            'phone'             => ['required', 'digits_between:6,13'],
+            'whatsapp'          => ['required', 'digits_between:6,13'],
+            'virtual_account'   => ['required', 'digits:16'],
+            'api_key'           => ['required', 'string', 'max:64'],
+            'latitude'          => ['required', 'numeric'],
+            'longitude'         => ['required', 'numeric'],
         ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success'   => false,
-                'message'   => $validator->errors()->all(),
-            ]);
-        }
 
         if ($request->logo) {
             File::delete(storage_path('app/'. $company->logo));
             $company->logo = $request->logo->store('public/logo');
         }
 
-        $company->name          = $request->nama;
+        $company->name          = $request->name;
         $company->email         = $request->email;
-        $company->description   = $request->deskripsi;
-        $company->address       = $request->alamat;
+        $company->description   = $request->description;
+        $company->address       = $request->address;
         $company->testimonial   = $request->testimonial;
-        $company->phone         = $request->nomor_telepon;
-        $company->whatsapp      = $request->nomor_whatsapp;
-        $company->va            = $request->nomor_virtual_account;
+        $company->phone         = $request->phone;
+        $company->whatsapp      = $request->whatsapp;
+        $company->va            = $request->virtual_account;
         $company->latitude      = $request->latitude;
         $company->longitude     = $request->longitude;
         $company->api_key       = $request->api_key;
         $company->save();
 
-        return response()->json([
-            'success'   => true,
-        ]);
+        alert()->success(__('Company has been updated'), __('Success'));
+        return redirect()->back();
     }
 }

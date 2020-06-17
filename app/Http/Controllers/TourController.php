@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Gallery;
 use App\Package;
 use App\Tour;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class TourController extends Controller
 {
@@ -15,18 +18,24 @@ class TourController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $packages = Package::all();
         $tours = Tour::orderBy('id', 'desc')->paginate(9);
-        return view('tour.index', compact('tours','packages'));
+        if ($request->key) {
+            $tours = Tour::where('name','like','%'. $request->key . '%')
+                            ->orderBy('id', 'desc')->paginate(9);
+        }
+        $packages = Package::all();
+        $package = null;
+        return view('tour.index', compact('package','tours','packages'));
     }
 
     public function package(Package $package, $slug)
     {
+        $packages = Package::all();
         if ($slug == Str::slug($package->name)) {
             $tours = Tour::wherePackageId($package->id)->orderBy('id', 'desc')->paginate(9);
-            return view('tour.package', compact('package','tours'));
+            return view('tour.index', compact('package','tours','packages'));
         }
 
         return abort(404);
@@ -39,7 +48,8 @@ class TourController extends Controller
      */
     public function create()
     {
-        return view('tour.create');
+        $packages = Package::all();
+        return view('tour.create', compact('packages'));
     }
 
     /**
@@ -50,7 +60,33 @@ class TourController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'package'       => ['required'],
+            'name'          => ['required','string','max:64'],
+            'price'         => ['required', 'numeric', 'min:1000'],
+            'description'   => ['required'],
+            'images.*'      => ['required','image','max:2048']
+        ]);
+
+        $tour = Tour::create([
+            'package_id'    => $request->package,
+            'name'          => $request->name,
+            'price'         => $request->price,
+            'description'   => $request->description
+        ]);
+
+        $images = $request->file('images');
+        foreach ($images as $image) {
+            if ($image) {
+                Gallery::create([
+                    'image' => $image->store('public/gallery'),
+                    'tour_id' => $tour->id
+                ]);
+            }
+        }
+
+        alert()->success(__('alert.success-create',['attribute' => 'Tour']), __('Success'));
+        return redirect()->route('tour.index');
     }
 
     /**
@@ -76,7 +112,17 @@ class TourController extends Controller
      */
     public function edit(Tour $tour)
     {
-        return view('tour.edit', compact('tour'));
+        $packages = Package::all();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'success'   => true,
+                'message'   => __('alert.success-get', ['attribute' => 'images']),
+                'data'      => $tour->galleries
+            ],200);
+        }
+
+        return view('tour.edit', compact('tour','packages'));
     }
 
     /**
@@ -88,7 +134,39 @@ class TourController extends Controller
      */
     public function update(Request $request, Tour $tour)
     {
-        //
+        if(request()->ajax()){
+            $validator = Validator::make($request->all(),[
+                'image' => ['required', 'image', 'max:2048']
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success'   => false,
+                    'message'   => $validator->errors()->all()
+                ]);
+            }
+
+            Gallery::create([
+                'tour_id'   => $tour->id,
+                'image'     => $request->image->store('public/gallery')
+            ]);
+
+            return response()->json([
+                'success'   => true,
+                'message'   => __('alert.success-create', ['attribute' => 'Image'])
+            ]);
+        }
+
+        $data = $request->validate([
+            'package_id'    => ['required'],
+            'name'          => ['required','string','max:64', Rule::unique('tours','name')->ignore($tour)],
+            'price'         => ['required', 'numeric', 'min:1000'],
+            'description'   => ['required'],
+        ]);
+
+        $tour->update($data);
+        alert()->success(__('alert.success-update', ['attribute' => 'Tour']), __('Success'));
+        return back();
     }
 
     /**
@@ -103,7 +181,7 @@ class TourController extends Controller
             File::delete(storage_path('app/'.$gallery->image));
         }
         $tour->delete();
-        alert()->success('Wisata '. $tour->name .' berhasil dihapus', 'Berhasil');
+        alert()->success(__('alert.success-delete',['attribute' => $tour->name]), __('Success'));
         return redirect()->back();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Gallery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class GalleryController extends Controller
 {
@@ -14,7 +15,17 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        //
+        $galleries = Gallery::whereCompanyId(1)->get();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'success'   => true,
+                'message'   => __('alert.success-get', ['attribute' => 'images']),
+                'data'      => $galleries
+            ],200);
+        }
+
+        return view('galllery.index', compact('galleries'));
     }
 
     /**
@@ -24,7 +35,7 @@ class GalleryController extends Controller
      */
     public function create()
     {
-        //
+        return view('galllery.create');
     }
 
     /**
@@ -35,41 +46,39 @@ class GalleryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $photos = $request->file('file');
+
+        if (!is_array($photos)) {
+            $photos = [$photos];
+        }
+
+        for ($i = 0; $i < count($photos); $i++) {
+            Gallery::create([
+                'image' => $photos[$i]->store('public/gallery'),
+                'company_id' => 1
+            ]);
+        }
+
+        return response()->json([
+            'message' => __('alert.success-create', ['attribute' => 'Images'])
+        ]);
     }
 
     /**
-     * Display the specified resource.
+     * Update the specified resource from storage.
      *
      * @param  \App\Gallery  $gallery
      * @return \Illuminate\Http\Response
      */
-    public function show(Gallery $gallery)
+    public function update(Gallery $gallery, Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Gallery  $gallery
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Gallery $gallery)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Gallery  $gallery
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Gallery $gallery)
-    {
-        //
+        File::delete(storage_path('app/'.$gallery->image));
+        $gallery->image = $request->image->store('public/gallery');
+        $gallery->save();
+        return response()->json([
+            'success'   => true,
+            'message'   => __('alert.success-update', ['attribute' => 'Images']),
+        ]);
     }
 
     /**
@@ -80,6 +89,11 @@ class GalleryController extends Controller
      */
     public function destroy(Gallery $gallery)
     {
-        //
+        File::delete(storage_path('app/'.$gallery->image));
+        $gallery->delete();
+        return response()->json([
+            'success'   => true,
+            'message'   => __('alert.success-delete', ['attribute' => 'Images']),
+        ]);
     }
 }

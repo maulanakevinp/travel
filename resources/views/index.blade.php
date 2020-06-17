@@ -27,7 +27,7 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="{{ asset(Storage::url($company->galleries[0]->image)) }}" class="d-block w-100"
-                    alt="{{ $company->galleries[0]->description }}">
+                    alt="{{ $company->galleries[0]->description }}" style="max-height: 500px">
                 @if($company->galleries[0]->description)
                     <div class="carousel-caption d-none d-md-block">
                         <p>{{ $company->galleries[0]->description }}</p>
@@ -37,7 +37,7 @@
             @for($i = 1; $i < count($company->galleries); $i++)
                 <div class="carousel-item">
                     <img src="{{ asset(Storage::url($company->galleries[$i]->image)) }}"
-                        class="d-block w-100" alt="{{ $company->galleries[$i]->description }}">
+                        class="d-block w-100" alt="{{ $company->galleries[$i]->description }}" style="max-height: 500px">
                     @if($company->galleries[$i]->description)
                         <div class="carousel-caption d-none d-md-block">
                             <p>{{ $company->galleries[$i]->description }}</p>
@@ -48,17 +48,17 @@
         </div>
         <a class="carousel-control-prev" href="#slider" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
+            <span class="sr-only">{{ __('Previous') }}</span>
         </a>
         <a class="carousel-control-next" href="#slider" role="button" data-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
+            <span class="sr-only">{{ __('Next') }}</span>
         </a>
     </div>
-    <section id="tentang-kami" class="mt-5">
+    <section id="about" class="mt-5">
         <div class="card bg-dark shadow p-5">
             <div class="card-body">
-                <h2 class="text-center font-weight-bold mb-5">Tentang Kami</h2>
+                <h2 class="text-center font-weight-bold mb-5">{{ __('About') }}</h2>
                 <div class="container px-xl-5">
                     <p class="mt-3 text-center px-xl-5">
                         {{ $company->description }}
@@ -67,10 +67,10 @@
             </div>
         </div>
     </section>
-    <section id="paket-wisata" class="mt-5">
+    <section id="tour-package" class="mt-5">
         <div class="card bg-dark shadow p-5">
             <div class="card-body">
-                <h2 class="text-center font-weight-bold mb-5">Paket Wisata</h2>
+                <h2 class="text-center font-weight-bold mb-5">{{ __('Tour Package') }}</h2>
                 <div class="row  justify-content-center">
                     @foreach($packages as $package)
                         <div class="col-lg-4 mb-3">
@@ -87,10 +87,17 @@
             </div>
         </div>
     </section>
+    <section id="portofolio" class="mt-5">
+        <div class="card bg-dark shadow p-5">
+            <div class="card-body">
+                <h2 class="text-center font-weight-bold mb-5">{{ __('Portofolio') }}</h2>
+            </div>
+        </div>
+    </section>
     @if($testimonies->count() > 2)
-        <section id="testimoni" class="mt-5 people">
+        <section id="testimonial" class="mt-5 people">
             <div class="pt-5">
-                <h2 class="text-center font-weight-bold text-white mb-5 mt-3">Testimoni</h2>
+                <h2 class="text-center font-weight-bold text-white mb-5 mt-3">{{ __('Testimoni') }}</h2>
                 <div class="owl-carousel">
                     @foreach($testimonies as $testimony)
                         <div class="card bg-dark shadow testimonials-clean">
@@ -143,14 +150,14 @@
             </div>
         </section>
     @endif
-    <section id="hubungi-kami" class="mt-5">
+    <section id="contact" class="mt-5">
         <div class="pt-5">
-            <h2 class="text-center font-weight-bold text-white mb-5 mt-3">Hubungi Kami</h2>
+            <h2 class="text-center font-weight-bold text-white mb-5 mt-3">{{ __('Contact') }}</h2>
             <div class="row justify-content-center">
                 <div class="col-md-4 mb-3">
                     <div class="card bg-dark shadow h-100 testimonials-clean">
                         <div class="card-body text-center text-white">
-                            <h4>Alamat</h4>
+                            <h4>{{ __('Address') }}</h4>
                             <p class="text-white">{{ $company->address }}</p>
                         </div>
                     </div>
@@ -158,16 +165,16 @@
                 <div class="col-md-4 mb-3">
                     <div class="card bg-dark shadow h-100 testimonials-clean">
                         <div class="card-body text-center text-white">
-                            <h4>Kontak</h4>
-                            Telepon: <a href="tel:{{ $company->phone }}" class="text-white">{{ $company->phone }}</a><br>
-                            Whatsapp: <a class="text-white" href="https://api.whatsapp.com/send?phone=62{{ substr($company->whatsapp,1) }}">{{ $company->whatsapp }}</a>
+                            <h4>{{ __('Contact') }}</h4>
+                            {{ __('Phone') }}: <a href="tel:{{ $company->phone }}" class="text-white">{{ $company->phone }}</a><br>
+                            {{ __('WhatsApp') }}: <a class="text-white" href="https://api.whatsapp.com/send?phone=62{{ substr($company->whatsapp,1) }}">{{ $company->whatsapp }}</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="card bg-dark shadow h-100 testimonials-clean">
                         <div class="card-body text-center text-white">
-                            <h4>Email</h4>
+                            <h4>{{ __('Email') }}</h4>
                             <a href="mailto:{{ $company->email }}" class="text-white">{{ $company->email }}</a>
                         </div>
                     </div>

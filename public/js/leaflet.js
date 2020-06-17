@@ -1,6 +1,6 @@
 const latitude = document.querySelector('meta[name="latitude"]').content;
 const longitude = document.querySelector('meta[name="longitude"]').content;
-const appName = document.querySelector('meta[name="app-name"]').content;
+const logo = document.querySelector('meta[name="logo"]').content;
 var mymap = L.map('mapid').setView([latitude, longitude], 12);
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
@@ -13,4 +13,6 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(mymap);
 
 var marker = L.marker([latitude, longitude]).addTo(mymap);
-marker.bindPopup("<b>"+ appName +"</b><br>Kantor Kami").openPopup();
+marker.bindPopup(`
+<img src="`+ logo +`" alt="logo" heigth="100px" width="100px">
+<br>We are here`).openPopup();

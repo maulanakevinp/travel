@@ -19,79 +19,79 @@
     </div>
     <div class="card bg-dark">
         <div class="card-header">
-            <h5 class="m-0 pt-1 font-weight-bold">Company</h5>
+            <h5 class="m-0 pt-1 font-weight-bold">{{ __('Company') }}</h5>
         </div>
         <div class="card-body">
-            <form id="formCompany" method="post">
+            <form action="{{ route('company.update',$company) }}" method="post">
                 @csrf @method('patch')
                 <input type="hidden" name="id" value="{{ $company->id }}">
                 <div class="row justify-content-center">
                     <div class="col-lg-4 mb-1">
                         <div class="form-group">
-                            <label for="logo">logo</label><br>
-                            <img title="ganti logo" onclick="document.getElementById('logo').click()" id="display-logo" src="{{ asset(Storage::url($company->logo)) }}" alt="{{ asset(Storage::url($company->logo)) }}" width="100px" height="100px">
+                            <label for="logo">Logo</label><br>
+                            <img title="{{ __('Change Logo')}}" onclick="document.getElementById('logo').click()" id="display-logo" src="{{ asset(Storage::url($company->logo)) }}" alt="{{ asset(Storage::url($company->logo)) }}" width="100px" height="100px">
                             <input type="file" name="logo" id="logo" style="display: none">
                         </div>
                         <div class="form-group">
-                            <label for="nama">Nama</label>
-                            <input type="text" name="nama" id="nama" class="form-control" placeholder="Masukkan nama perusahaan" value="{{ $company->name }}" required>
+                            <label for="name">{{ __('Name') }}</label>
+                            <input type="text" name="name" id="name" class="form-control" value="{{ $company->name }}" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" id="email" class="form-control" placeholder="Masukkan email perusahaan" value="{{ $company->email }}" required>
+                            <label for="email">{{ __('Email') }}</label>
+                            <input type="email" name="email" id="email" class="form-control" value="{{ $company->email }}" required>
                         </div>
                         <div class="form-group">
-                            <label for="nomor_telepon">Nomor Telepon</label>
-                            <input onkeypress="return hanyaAngka(event)" type="text" name="nomor_telepon" id="nomor_telepon" class="form-control" placeholder="Masukkan nomor telepon perusahaan" value="{{ $company->phone }}" required>
+                            <label for="phone">{{ __('Phone') }}</label>
+                            <input onkeypress="return hanyaAngka(event)" type="text" name="phone" id="phone" class="form-control" value="{{ $company->phone }}" required>
                         </div>
                         <div class="form-group">
-                            <label for="nomor_whatsapp">WhatsApp</label>
-                            <input onkeypress="return hanyaAngka(event)" type="text" name="nomor_whatsapp" id="nomor_whatsapp" class="form-control" placeholder="Masukkan nomor WhatsApp perusahaan" value="{{ $company->whatsapp }}" required>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mb-1">
-                        <div class="form-group">
-                            <label for="alamat">Alamat</label>
-                            <textarea style="resize:none" class="form-control" name="alamat" id="alamat" rows="3"  placeholder="Masukkan alamat perusahaan" required>{{ $company->address }}</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="deskripsi">Deskripsi</label>
-                            <textarea style="resize:none" class="form-control" name="deskripsi" id="deskripsi" rows="5"  placeholder="Masukkan deskripsi perusahaan" required>{{ $company->description }}</textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="testimonial">Testimonial</label>
-                            <textarea style="resize:none" class="form-control" name="testimonial" id="testimonial" rows="5"  placeholder="Masukkan deskripsi perusahaan" required>{{ $company->testimonial }}</textarea>
+                            <label for="whatsapp">{{ __('WhatsApp') }}</label>
+                            <input onkeypress="return hanyaAngka(event)" type="text" name="whatsapp" id="whatsapp" class="form-control" value="{{ $company->whatsapp }}" required>
                         </div>
                     </div>
                     <div class="col-lg-4 mb-1">
                         <div class="form-group">
-                            <label for="nomor_virtual_account">Nomor VA (Virtual Account)</label>
-                            <input onkeypress="return hanyaAngka(event)" type="text" name="nomor_virtual_account" id="nomor_virtual_account" class="form-control" placeholder="Masukkan nomor nomor virtual account perusahaan" value="{{ $company->va }}" required>
+                            <label for="address">{{ __('Address') }}</label>
+                            <textarea style="resize:none" class="form-control" name="address" id="address" rows="3"  required>{{ $company->address }}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="api_key">API Key</label>
-                            <input type="text" name="api_key" id="api_key" class="form-control" placeholder="Masukkan api key perusahaan" value="{{ $company->api_key }}" required>
+                            <label for="description">{{ __('Description') }}</label>
+                            <textarea style="resize:none" class="form-control" name="description" id="description" rows="5"  required>{{ $company->description }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="testimonial">{{ __('Testimonial') }}</label>
+                            <textarea style="resize:none" class="form-control" name="testimonial" id="testimonial" rows="5"  required>{{ $company->testimonial }}</textarea>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-1">
+                        <div class="form-group">
+                            <label for="virtual_account">{{ __('Virtual Account') }}</label>
+                            <input onkeypress="return hanyaAngka(event)" type="text" name="virtual_account" id="virtual_account" class="form-control" value="{{ $company->va }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="api_key">{{ __('API Key') }}</label>
+                            <input type="text" name="api_key" id="api_key" class="form-control" value="{{ $company->api_key }}" required>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="latitude">Latitude</label>
+                                    <label for="latitude">{{ ('Latitude') }}</label>
                                     <input class="form-control" type="text" name="latitude" id="latitude" value="{{ $company->latitude }}" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="longitude">Longitude</label>
+                                    <label for="longitude">{{ __('Longitude') }}</label>
                                     <input class="form-control" type="text" name="longitude" id="longitude" value="{{ $company->longitude }}" required>
                                 </div>
                             </div>
                             <div class="container">
-                                <div id="mapid" style="height: 215px; width:100%; border: 1px solid white"></div>
+                                <div id="mapid" style="height: 215px; width:100%;"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block mt-3" id="simpan">Simpan</button>
+                <button type="submit" class="btn btn-primary btn-block mt-3" id="simpan">{{ __('Save') }}</button>
             </form>
         </div>
     </div>

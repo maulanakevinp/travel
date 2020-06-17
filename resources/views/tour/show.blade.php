@@ -12,13 +12,13 @@
 <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-dark">
-            <li class="breadcrumb-item"><a
-                    href="{{ route('tour.package',['package' => $tour->package, 'slug' => Str::slug($tour->package->name)]) }}">{{ $tour->package->name }}</a>
+            <li class="breadcrumb-item">
+                <a href="{{ route('tour.package',['package' => $tour->package, 'slug' => Str::slug($tour->package->name)]) }}">{{ $tour->package->name }}</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">{{ $tour->name }}</li>
         </ol>
     </nav>
-    <div class="row mt-5">
+    <div class="row mt-3">
         <div class="col-lg-8 mb-3">
             <div class="card bg-dark shadow">
                 <div class="card-body">
@@ -54,26 +54,28 @@
                 <div class="card-body">
                     <h4>Paket wisata lainnya</h4>
                     <ul class="list-unstyled">
-                        @foreach($tours as $item)
-                            @if($item->id != $tour->id)
-                                <hr>
-                                <li class="media">
-                                    <div class="mr-3"
-                                        style="background-size: cover ;height: 64px; width: 64px;background-image: url('{{ asset(Storage::url($item->galleries[0]->image)) }}')">
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="mt-0 mb-1">{{ $item->name }}</h5>
-                                        <div class="block-with-text">
-                                            {!! $item->description !!}
+                        @if($tours)
+                            @foreach($tours as $item)
+                                @if ($item->id != $tour->id)
+                                    <hr>
+                                    <li class="media">
+                                        <div class="mr-3"
+                                            style="background-size: cover ;height: 64px; width: 64px;background-image: url('{{ asset(Storage::url($item->galleries[0]->image)) }}')">
                                         </div>
-                                        <a href="{{ route('tour.show',['tour' => $item , 'slug' => Str::slug($item->name)]) }}"
-                                            class="btn btn-sm btn-primary float-right">Lihat</a>
-                                    </div>
-                                </li>
-                            @else
-                                <h5 class="text-center mt-3">--- Paket tidak tersedia ---</h5>
-                            @endif
-                        @endforeach
+                                        <div class="media-body">
+                                            <h5 class="mt-0 mb-1 block-with-text">{{ $item->name }}</h5>
+                                            <div class="">
+                                                Harga : Rp. {{ substr(number_format($item->price, 2, ',', '.'),0,-3) }}
+                                            </div>
+                                            <a href="{{ route('tour.show',['tour' => $item , 'slug' => Str::slug($item->name)]) }}"
+                                                class="btn btn-sm btn-primary float-right">Lihat</a>
+                                        </div>
+                                    </li>
+                                @endif
+                            @endforeach
+                        @else
+                            <h5 class="text-center mt-3">--- Paket tidak tersedia ---</h5>
+                        @endif
                     </ul>
                 </div>
             </div>

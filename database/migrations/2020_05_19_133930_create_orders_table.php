@@ -20,17 +20,17 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('transaction_id');
             $table->string('via',16);
             $table->string('channel',16);
-            $table->string('total');
+            $table->string('amount');
             $table->text('payment_no');
             $table->timestamp('expired');
             $table->string('status');
-            $table->string('asal');
+            $table->string('hometown');
             $table->tinyInteger('qty');
-            $table->timestamp('tanggal_berangkat')->nullable();
-            $table->timestamp('tanggal_pulang')->nullable();
+            $table->timestamp('date_start')->nullable();
+            $table->timestamp('date_end')->nullable();
             $table->tinyInteger('rating')->nullable();
-            $table->text('testimoni')->nullable();
-            $table->text('keterangan')->nullable();
+            $table->text('testimonial')->nullable();
+            $table->text('note')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

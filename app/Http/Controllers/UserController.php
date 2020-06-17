@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -18,17 +19,28 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $users = User::all();
+        $roles = Role::all();
+        if (request()->ajax()) {
+            return datatables()->of(User::with('role')->get())
+                ->addColumn('email', function($data){
+                    return '<a href="'.route('user.show',$data->id).'">'.$data->email.'</a>';
+                })
+                ->addColumn('created_at', function($data){
+                    return date('d F Y, H:i:s', strtotime($data->created_at));
+                })
+                ->addColumn('action', function($data){
+                    return '<a href="'. route('user.edit', $data->id) .'" title="'. __('Edit') .'" class="btn btn-sm btn-success">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button class="btn btn-sm btn-danger delete" data-id="'. $data->id .'" title="'. __('Delete') .'">
+                                <i class="fas fa-trash"></i>
+                            </button>';
+                })
+                ->rawColumns(['action','email','created_at'])
+                ->make(true);
+        }
+        return view('user.index', compact('users','roles'));
     }
 
     /**
@@ -39,7 +51,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'role'              => ['required'],
+            'email'             => ['required', 'email', 'max:64', 'unique:users,email'],
+            'name'              => ['required', 'string', 'max:64'],
+            'phone'             => ['required', 'digits_between:6,13'],
+            'phone_emergency'   => ['nullable', 'digits_between:6,13'],
+            'address'           => ['required', 'string'],
+        ]);
+
+        $user = User::create($data);
+        $user->sendEmailVerificationNotification();
+        alert()->success(__('alert.success-create',['attribute' => __('User')]), __('Success'));
+        return redirect()->back();
     }
 
     /**
@@ -50,7 +74,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('user.show', compact("user"));
+        $roles = Role::all();
+        return view('user.show', compact("user",'roles'));
     }
 
     /**
@@ -61,7 +86,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $roles = Role::all();
+        return view('user.edit', compact("user",'roles'));
     }
 
     /**
@@ -73,7 +99,22 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $data = $request->validate([
+            'role'              => ['required'],
+            'email'             => ['required', 'email', 'max:64', Rule::unique('users','email')->ignore($user)],
+            'name'              => ['required', 'string', 'max:64'],
+            'phone'             => ['required', 'digits_between:6,13'],
+            'phone_emergency'   => ['nullable', 'digits_between:6,13'],
+            'address'           => ['required', 'string'],
+        ]);
+
+        if ($request->email != $user->email) {
+            $user->sendEmailVerificationNotification();
+        }
+
+        $user->update($data);
+        alert()->success(__('alert.success-update',['attribute' => __('User')]), __('Success'));
+        return redirect()->back();
     }
 
     /**
@@ -84,53 +125,58 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
-    }
-
-    public function profil()
-    {
-        return view('user.profil');
-    }
-
-    public function editProfil()
-    {
-        return view('user.edit-profil');
-    }
-
-    public function updateProfil(Request $request)
-    {
-        $user = User::find(auth()->user()->id);
-        $request->validate([
-            'nama'  => ['required', 'string', 'max:32'],
-            'nohp'  => ['required', 'digits_between:6,13'],
-            'alamat' => ['required', 'string']
-        ]);
-
-        $user->name = $request->nama;
-        $user->phone = $request->nohp;
-        $user->address = $request->alamat;
-        $user->save();
-
-        alert()->success('Profil berhasil diperbarui','Berhasil');
+        if ($user->avatar != 'noavatar.jpg') {
+            File::delete(storage_path('app/'.$user->avatar));
+        }
+        $user->delete();
+        alert()->success(__('alert.success-delete',['attribute' => __('User')]), __('Success'));
         return redirect()->back();
     }
 
-    public function pengaturan()
+    public function profile()
     {
-        return view('user.pengaturan');
+        return view('user.profile');
     }
 
-    public function updatePengaturan(Request $request)
+    public function editProfile()
+    {
+        return view('user.edit-profile');
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = User::find(auth()->user()->id);
+        $request->validate([
+            'name'  => ['required', 'string', 'max:32'],
+            'phone'  => ['required', 'digits_between:6,13'],
+            'address' => ['required', 'string']
+        ]);
+
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->save();
+
+        alert()->success(__('alert.success-update',['attribute' => __('Profile')]), __('Success'));
+        return redirect()->back();
+    }
+
+    public function setting()
+    {
+        return view('user.setting');
+    }
+
+    public function updateSetting(Request $request)
     {
         $user = User::find(auth()->user()->id);
 
         $request->validate([
             'email'         => ['nullable', 'string', 'email', 'max:32', Rule::unique('users', 'email')->ignore($user)],
             'password'      => ['nullable', 'string', 'min:8', 'confirmed'],
-            'password_lama' => ['required', 'string', 'min:8'],
+            'old_password'  => ['required', 'string', 'min:8'],
         ]);
 
-        if (Hash::check($request->password_lama, $user->password)) {
+        if (Hash::check($request->old_password, $user->password)) {
             $user->name = $request->name;
 
             if ($request->email) {
@@ -144,18 +190,16 @@ class UserController extends Controller
             }
 
             $user->save();
-            alert()->success('Pengaturan berhasil diperbarui','Berhasil');
-            return redirect()->back();
+            alert()->success(__('alert.success-update',['attribute' => __('Setting')]), __('Success'));
+        return redirect()->back();
         } else {
-            alert()->error('Password yang anda masukkan salah','Gagal')->persistent();
+            alert()->error(__('The password you entered is incorrect'),__('Failed'))->persistent();
             return redirect()->back();
         }
     }
 
-    public function updateAvatar(Request $request)
+    public function updateAvatar(Request $request, User $user)
     {
-        $user = User::findOrFail(auth()->user()->id);
-
         $validator = Validator::make($request->all(), [
             'avatar' => ['required', 'image', 'mimes:png,jpeg', 'max:2048']
         ]);
@@ -177,7 +221,7 @@ class UserController extends Controller
 
         return response()->json([
             'error'     => false,
-            'message'   => 'Foto profil berhasil diperbarui',
+            'message'   => __('alert.success-update', ['attribute' => __('Profile picture')]),
             'avatar'    => $user->avatar
         ]);
     }

@@ -33,7 +33,7 @@ class PackageController extends Controller
 
         Package::create($data);
 
-        alert()->success('Paket '.$request->name.' berhasil ditambahkan', 'Berhasil');
+        alert()->success(__('alert.success-create',['attribute' => __('Package')]), __('Success'));
         return redirect()->back();
     }
 
@@ -62,7 +62,7 @@ class PackageController extends Controller
         ]);
 
         $package->update($data);
-        alert()->success('Paket '.$package->name.' berhasil diperbarui', 'Berhasil');
+        alert()->success(__('alert.success-update',['attribute' => __('Package')]), __('Success'));
         return redirect()->back();
 
     }
@@ -76,7 +76,7 @@ class PackageController extends Controller
     public function destroy(Package $package)
     {
         $package->delete();
-        alert()->success('Paket '.$package->name.' berhasil dihapus', 'Berhasil');
+        alert()->success(__('alert.success-delete',['attribute' => __('Package')]), __('Success'));
         return redirect()->back();
     }
 }

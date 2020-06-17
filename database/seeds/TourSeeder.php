@@ -15,8 +15,8 @@ class TourSeeder extends Seeder
         Tour::create([
             'package_id'   => 1,
             'name'          => 'Wisata Papuma',
-            'price'         => '5000',
-            'description'   => 'Paket wisata papuma murah fasilitas lengkap mulai 5000'
+            'price'         => '15000',
+            'description'   => 'Paket wisata papuma murah fasilitas lengkap mulai 15000'
         ]);
     }
 }
