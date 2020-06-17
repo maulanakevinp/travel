@@ -3,7 +3,7 @@
 @if ($package)
     {{ $package->name }}
 @else
-    Daftar wisata
+    {{ __('Tour List') }}
 @endif
 @endsection
 @section('styles')
@@ -23,22 +23,22 @@
                 @if ($package)
                     {{ $package->name }}
                 @else
-                    Daftar wisata
+                    {{ __('Tour List') }}
                 @endif
             </h1>
         </div>
         @can('admin')
             <div class="col-md-2 mb-3">
-                <a href="{{ route('tour.create') }}" class="btn btn-success btn-block">Tambah wisata</a>
+                <a href="{{ route('tour.create') }}" class="btn btn-success btn-block">{{ __('Add Tour') }}</a>
             </div>
         @endcan
         <div class="col-md-2 mb-3">
             <div class="dropdown">
                 <button class="btn btn-secondary btn-block dropdown-toggle" type="button" id="dropdownPaket" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Pilih Paket
+                    {{ __('Select Package') }}
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownPaket">
-                    <a class="dropdown-item {{ Request::segment(1) == 'tour' ? "active" : "" }}" href="{{ route('tour.index') }}">Semua Paket</a>
+                    <a class="dropdown-item {{ Request::segment(1) == 'tour' ? "active" : "" }}" href="{{ route('tour.index') }}">{{ __('All Package') }}</a>
                     @foreach ($packages as $package)
                         <a class="dropdown-item" href="{{ route('tour.package',['package' => $package, 'slug' => Str::slug($package->name)]) }}">{{ $package->name }}</a>
                     @endforeach
@@ -49,9 +49,9 @@
         <div class="@can('admin') col-md-4 @else col-md-6 @endcan mb-3">
             <form action="{{ route('tour.index') }}" method="get">
                 <div class="input-group">
-                    <input type="text" class="form-control" name="key" placeholder="Cari" aria-label="Cari" aria-describedby="button-addon2" value="{{ Request('key') }}">
+                    <input type="text" class="form-control" name="key" placeholder="{{ __('Search') }}" aria-label="{{ __('Search') }}" aria-describedby="button-addon2" value="{{ Request('key') }}">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Cari</button>
+                        <button class="btn btn-primary" type="submit" id="button-addon2">{{ __('Search') }}</button>
                     </div>
                 </div>
             </form>

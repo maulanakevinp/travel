@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Checkout')
+@section('title', __('Checkout'))
 
 @section('content')
 <div class="container">
@@ -7,7 +7,7 @@
         @csrf
         <div class="row">
             <div class="col-lg-8 mb-3">
-                <h1 class="font-weight-bold h3">Checkout</h1>
+                <h1 class="font-weight-bold h3">{{ __('Checkout') }}</h1>
                 @include('layouts.components.alert')
                 <div class="card bg-dark shadow">
                     <div class="card-body">
@@ -17,56 +17,53 @@
                                     style="background-size: cover ;height: 64px; width: 64px;background-image: url('{{ asset(Storage::url($tour->galleries[0]->image)) }}')">
                                 </div>
                                 <div class="media-body">
-                                    <h5 class="mt-0 mb-1">{{ $tour->name }}</h5>
-                                    <h6 class="mt-0 mb-1">Harga : Rp. {{ substr(number_format($tour->price, 2, ',', '.'),0,-3) }}</h6>
-                                    <div class="block-with-text">
-                                        {!! $tour->description !!}
-                                    </div>
+                                    <a href="{{ route('tour.show',['tour' => $tour , 'slug' => Str::slug($tour->name)]) }}" class="mt-0 mb-1 block-with-text h5 text-white font-weight-bold">{{ $tour->name }}</a>
+                                    <h6>{{ __('Price') }} : Rp. {{ substr(number_format($tour->price, 2, ',', '.'),0,-3) }}</h6>
                                 </div>
                             </li>
                         </ul>
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">
-                                    <label for="tanggal_berangkat">Tanggal Berangkat</label>
-                                    <input type="datetime-local" id="tanggal_berangkat" class="form-control" name="tanggal_berangkat" value="{{ old('tanggal_berangkat', date('Y-m-d\TH:i', strtotime("+1 day"))) }}" min="{{ date('Y-m-d\TH:i') }}">
-                                    <span class="text-muted">bulan/tanggal/tahun, jam:menit waktu</span>
+                                    <label for="date_start">{{ __('Date Start') }}</label>
+                                    <input type="datetime-local" id="date_start" class="form-control" name="date_start" value="{{ old('date_start', date('Y-m-d\TH:i', strtotime("+1 day"))) }}" min="{{ date('Y-m-d\TH:i') }}">
+                                    <span class="text-muted">{{ __('month/date/year, hour:minute time') }}</span>
                                 </div>
                             </div>
                             <div class="col-md-5">
                                 <div class="form-group">
-                                    <label for="tanggal_pulang">Tanggal Pulang</label>
-                                    <input type="datetime-local" id="tanggal_pulang" class="form-control" name="tanggal_pulang" value="{{ old('tanggal_pulang', date('Y-m-d\TH:i', strtotime("+2 day"))) }}" min="{{ date('Y-m-d\TH:i', strtotime("+1 day")) }}">
-                                    <span class="text-muted">bulan/tanggal/tahun, jam:menit waktu</span>
+                                    <label for="date_end">{{ __('Date End') }}</label>
+                                    <input type="datetime-local" id="date_end" class="form-control" name="date_end" value="{{ old('date_end', date('Y-m-d\TH:i', strtotime("+2 day"))) }}" min="{{ date('Y-m-d\TH:i', strtotime("+1 day")) }}">
+                                    <span class="text-muted">{{ __('month/date/year, hour:minute time') }}</span>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label for="quantity">Quantity</label>
+                                    <label for="quantity">{{ __('Quantity') }}</label>
                                     <input type="number" name="quantity" id="quantity" class="form-control" value="{{ old('quantity', 1) }}">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="asal">Asal</label>
-                            <input type="text" name="asal" id="asal" class="form-control" value="{{ old('asal') }}" placeholder="Tempat anda berasal">
+                            <label for="hometown">{{ __('Hometown') }}</label>
+                            <input type="text" name="hometown" id="hometown" class="form-control" value="{{ old('hometown') }}" placeholder="Hometown">
                         </div>
                         <div class="form-group">
-                            <label for="keterangan">Keterangan</label>
-                            <textarea name="keterangan" id="keterangan" class="form-control" rows="3" style="resize: none" placeholder="Keterangan tambahan">{{ old('keterangan') }}</textarea>
+                            <label for="note">{{ __('Note') }}</label>
+                            <textarea name="note" id="note" class="form-control" rows="3" style="resize: none" placeholder="note">{{ old('note') }}</textarea>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4">
-                <h3 class="font-weight-bold">Metode Pembayaran</h3>
+                <h3 class="font-weight-bold">{{ __('Payment Method') }}</h3>
                 <div class="accordion" id="metodePembayaran">
                     <div class="card bg-dark shadow">
                         <div class="card-header" id="headingOne">
                             <h2 class="mb-0">
                                 <button id="va" class="btn btn-link text-white btn-block text-left" type="button" data-toggle="collapse"
                                     data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Virtual Account
+                                    {{ __('Virtual Account') }}
                                 </button>
                             </h2>
                         </div>
@@ -99,7 +96,7 @@
                                 <button id="qris" class="btn btn-link text-white btn-block text-left collapsed" type="button"
                                     data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
                                     aria-controls="collapseTwo">
-                                    QRIS
+                                    {{ __('QRIS') }}
                                 </button>
                             </h2>
                         </div>
@@ -116,8 +113,8 @@
                 <input type="text" name="paymentMethod" id="paymentMethod" style="display: none" value="va">
                 <div class="card shadow bg-dark mt-3">
                     <div class="card-body">
-                        <h4>Total : Rp. <span id="total">{{ $tour->price }}</span></h4>
-                        <button class="btn btn-primary btn-block mt-3" type="submit">Bayar</button>
+                        <h4>{{ __('Total') }} : Rp. <span id="total">{{ $tour->price }}</span></h4>
+                        <button class="btn btn-primary btn-block mt-3" type="submit">{{ __('Bayar') }}</button>
                     </div>
                 </div>
             </div>
@@ -148,23 +145,23 @@
             if(this.value < 1){
                 this.value = 1;
             }
-            days = Math.ceil(Math.abs(new Date($("#tanggal_berangkat").val()) - new Date($("#tanggal_pulang").val())) / (1000 * 60 * 60 * 24));
+            days = Math.ceil(Math.abs(new Date($("#date_start").val()) - new Date($("#date_end").val())) / (1000 * 60 * 60 * 24));
             if (isNaN(days)) {
                 days = 1;
             }
             $("#total").html(formatNumber($("#quantity").val() * price * days));
         });
 
-        $("#tanggal_berangkat").change(function(){
-            days = Math.ceil(Math.abs(new Date($("#tanggal_berangkat").val()) - new Date($("#tanggal_pulang").val())) / (1000 * 60 * 60 * 24));
+        $("#date_start").change(function(){
+            days = Math.ceil(Math.abs(new Date($("#date_start").val()) - new Date($("#date_end").val())) / (1000 * 60 * 60 * 24));
             if (isNaN(days)) {
                 days = 1;
             }
             $("#total").html(formatNumber($("#quantity").val() * price * days));
         });
 
-        $("#tanggal_pulang").change(function(){
-            days = Math.ceil(Math.abs(new Date($("#tanggal_berangkat").val()) - new Date($("#tanggal_pulang").val())) / (1000 * 60 * 60 * 24));
+        $("#date_end").change(function(){
+            days = Math.ceil(Math.abs(new Date($("#date_start").val()) - new Date($("#date_end").val())) / (1000 * 60 * 60 * 24));
             if (isNaN(days)) {
                 days = 1;
             }

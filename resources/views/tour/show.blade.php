@@ -13,7 +13,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-dark">
             <li class="breadcrumb-item">
-                <a href="{{ route('tour.package',['package' => $tour->package, 'slug' => Str::slug($tour->package->name)]) }}">{{ $tour->package->name }}</a>
+                <a href="{{ route('tour.package',['package' => $tour->package, 'slug' => Str::slug($tour->package->name)]) }}" class="text-white">{{ $tour->package->name }}</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">{{ $tour->name }}</li>
         </ol>
@@ -43,16 +43,14 @@
         <div class="col-lg-4 mb-3">
             <div class="card bg-dark shadow mb-3">
                 <div class="card-body">
-                    <h4>Harga : Rp.
-                        {{ substr(number_format($tour->price, 2, ',', '.'),0,-3) }}
-                    </h4>
-                    <a href="{{ route('order.create',['tour' => $tour , 'slug' => Str::slug($tour->name)]) }}" class="btn btn-success">Pesan Tiket</a>
+                    <h4>{{ __('Price') }} : Rp. {{ substr(number_format($tour->price, 2, ',', '.'),0,-3) }} </h4>
+                    <a href="{{ route('order.create',['tour' => $tour , 'slug' => Str::slug($tour->name)]) }}" class="btn btn-success">{{  __('Order Ticket') }}</a>
                 </div>
             </div>
 
             <div class="card bg-dark shadow mb-3">
                 <div class="card-body">
-                    <h4>Paket wisata lainnya</h4>
+                    <h4>{{ __('Other tour packages') }}</h4>
                     <ul class="list-unstyled">
                         @if($tours)
                             @foreach($tours as $item)
@@ -65,7 +63,7 @@
                                         <div class="media-body">
                                             <h5 class="mt-0 mb-1 block-with-text">{{ $item->name }}</h5>
                                             <div class="">
-                                                Harga : Rp. {{ substr(number_format($item->price, 2, ',', '.'),0,-3) }}
+                                                {{ __('Price') }} : Rp. {{ substr(number_format($item->price, 2, ',', '.'),0,-3) }}
                                             </div>
                                             <a href="{{ route('tour.show',['tour' => $item , 'slug' => Str::slug($item->name)]) }}"
                                                 class="btn btn-sm btn-primary float-right">Lihat</a>
@@ -74,7 +72,7 @@
                                 @endif
                             @endforeach
                         @else
-                            <h5 class="text-center mt-3">--- Paket tidak tersedia ---</h5>
+                            <h5 class="text-center mt-3">--- {{ __('Tour package not found') }} ---</h5>
                         @endif
                     </ul>
                 </div>
