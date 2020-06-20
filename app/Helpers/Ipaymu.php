@@ -127,13 +127,13 @@ class Ipaymu
     /**
      * Check Saldo.
      */
-    public function cekSaldo()
+    public function checkBalance()
     {
         $data = file_get_contents('https://my.ipaymu.com/api/saldo?key='.$this->getApiKey());
         return json_decode($data, true);
     }
 
-    public function cekTransaksi($id)
+    public function checkTransaction($id)
     {
         $response = $this->request(
             "https://my.ipaymu.com/api/transaksi",

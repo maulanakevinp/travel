@@ -54,8 +54,12 @@
                     <div class="form-group">
                         <label for="images">Images</label>
                         <div id="field-images" class="row"></div>
-                        <input type="file" name="image" accept="image/*" id="input-image" style="display: none">
                     </div>
+                    <div class="form-group">
+                        <label for="portofolio">Portofolio</label>
+                        <div id="field-portofolio" class="row"></div>
+                    </div>
+                    <input id="input-add-image" type="file" name="images" accept="image/*" class="images" style="display: none">
                 </div>
             </div>
         </div>
@@ -68,27 +72,44 @@
 <script src="{{ asset('js/lightbox.js') }}"></script>
 
 <script>
+    let is_portofolio = null;
     function loadImages() {
         $.getJSON("{{ route('tour.edit', $tour->id) }}", function(result){
             $("#field-images").html('');
+            $("#field-portofolio").html('');
             $.each(result.data, function(i, data){
                 let path = data.image;
                 path = path.replace('public','storage');
-                if (i == 0) {
-                    $("#field-images").append(`
-                        <div class="col-lg-4 col-sm-6 mb-3">
-                            <a href="${baseURL}/${path}" data-lightbox="image-1" data-title="Images">
-                                <img id="img-image" class="mw-100" style="max-height: 300px" src="${baseURL}/${path}" alt="${baseURL}/${path}">
-                            </a>
-                            <button id="change-image" onclick="$('#input-image').click()" data-id="${data.id}" title="{{ __('Change Photo') }}" class="btn btn-dark ml-3" style="position: absolute; top: 0; z-index: 1; left: 0;">
-                                <i class="fas fa-camera"></i>
-                            </button>
-                        </div>
-                    `);
+                if (data.is_portofolio != 1) {
+                    if (i == 0) {
+                        $("#field-images").append(`
+                            <div class="col-lg-4 col-sm-6 mb-3">
+                                <a href="${baseURL}/${path}" data-lightbox="image-1" data-title="Images">
+                                    <img id="img-image" class="mw-100" style="max-height: 300px" src="${baseURL}/${path}" alt="${baseURL}/${path}">
+                                </a>
+                                <button id="change-image" onclick="$('#input-image').click()" data-id="${data.id}" title="{{ __('Change Photo') }}" class="btn btn-dark ml-3" style="position: absolute; top: 0; z-index: 1; left: 0;">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                        `);
+                    } else {
+                        $("#field-images").append(`
+                            <div class="col-lg-4 col-sm-6 mb-3">
+                                <a href="${baseURL}/${path}" data-lightbox="image-1" data-title="Images">
+                                    <img class="mw-100" style="max-height: 300px" src="${baseURL}/${path}" alt="">
+                                </a>
+                                <form class="mb-0 hapus-foto" data-id="${data.id}" action="javascript:;" method="post">
+                                    <input type="hidden" name="_token" value="${_token}">
+                                    <input type="hidden" name="_method" value="delete">
+                                    <button type="submit" title="{{ __('Delete') }}" class="btn btn-danger" style="position: absolute; top: 0; z-index: 1;" onclick="return confirm('Are you sure want to delete this image?');"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </div>
+                        `);
+                    }
                 } else {
-                    $("#field-images").append(`
+                    $("#field-portofolio").append(`
                         <div class="col-lg-4 col-sm-6 mb-3">
-                            <a href="${baseURL}/${path}" data-lightbox="image-1" data-title="Images">
+                            <a href="${baseURL}/${path}" data-lightbox="portofolio-1" data-title="portofolio">
                                 <img class="mw-100" style="max-height: 300px" src="${baseURL}/${path}" alt="">
                             </a>
                             <form class="mb-0 hapus-foto" data-id="${data.id}" action="javascript:;" method="post">
@@ -102,11 +123,20 @@
             });
             $("#field-images").append(`
                 <div class="col-lg-4 col-sm-6">
-                    <img onclick="$(this).siblings('.images').click()" class="mw-100 upload-image" style="max-height: 300px" src="{{ asset('images/upload.jpg') }}" alt="">
-                    <input id="input-add-image" type="file" name="images" accept="image/*" class="images" style="display: none">
+                    <img onclick="clickUpload(0)" class="mw-100 upload-image" style="max-height: 300px" src="{{ asset('images/upload.jpg') }}" alt="">
+                </div>
+            `);
+            $("#field-portofolio").append(`
+                <div class="col-lg-4 col-sm-6">
+                    <img onclick="clickUpload(1)" class="mw-100 upload-image" style="max-height: 300px" src="{{ asset('images/upload.jpg') }}" alt="">
                 </div>
             `);
         });
+    }
+
+    function clickUpload (param) {
+        is_portofolio = param;
+        $('#input-add-image').click();
     }
 
     CKEDITOR.replace( 'description' );
@@ -119,6 +149,7 @@
                 let formData = new FormData();
                 let oFReader = new FileReader();
                 formData.append("image", this.files[0]);
+                formData.append("is_portofolio", is_portofolio);
                 formData.append("_method", "patch");
                 formData.append("_token", _token);
                 oFReader.readAsDataURL(this.files[0]);
@@ -142,6 +173,7 @@
                             });
 
                             loadImages();
+                            param = null;
                         } else {
                             swal({
                                 icon: 'error',
@@ -150,6 +182,7 @@
                             });
 
                             loadImages();
+                            param = null;
                         }
                     }
                 });

@@ -128,7 +128,11 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        if(request()->ajax()){
+            $order->paymentTime = $request->paymentTime;
+            $order->status = $request->status;
+            $order->save();
+        }
     }
 
     /**
@@ -140,5 +144,10 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         //
+    }
+
+    public function checkTransaction($id)
+    {
+        return $this->ipaymu->checkTransaction($id);
     }
 }

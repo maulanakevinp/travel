@@ -61,9 +61,11 @@
                             <a class="nav-link"
                                 href="{{ url('/#tour-package') }}">{{ __('Tour Package') }}</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/#portofolio') }}">{{ __('Portofolio') }}</a>
-                        </li>
+                        @if(App\Gallery::where('is_portofolio', true)->count() > 2)
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/#portofolio') }}">{{ __('Portofolio') }}</a>
+                            </li>
+                        @endif
                         @if(App\Order::whereRating(5)->count() > 2)
                             <li class="nav-item">
                                 <a class="nav-link"

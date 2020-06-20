@@ -6,6 +6,8 @@
 <link href="{{ asset('css/Testimonials.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/lightbox.css') }}">
+
 <style>
 
     .wisata:hover {
@@ -55,6 +57,7 @@
             <span class="sr-only">{{ __('Next') }}</span>
         </a>
     </div>
+
     <section id="about" class="mt-5">
         <div class="card bg-dark shadow p-5">
             <div class="card-body">
@@ -67,6 +70,7 @@
             </div>
         </div>
     </section>
+
     <section id="tour-package" class="mt-5">
         <div class="card bg-dark shadow p-5">
             <div class="card-body">
@@ -87,13 +91,24 @@
             </div>
         </div>
     </section>
-    <section id="portofolio" class="mt-5">
-        <div class="card bg-dark shadow p-5">
-            <div class="card-body">
-                <h2 class="text-center font-weight-bold mb-5">{{ __('Portofolio') }}</h2>
+
+    @if($portofolios->count() > 2)
+        <section id="portofolio" class="mt-5">
+            <div class="pt-5">
+                <h2 class="text-center font-weight-bold text-white mb-5 mt-3">{{ __('Portofolio') }}</h2>
+                <div class="row justify-content-center">
+                    @foreach ($portofolios as $portofolio)
+                        <div class="col-lg-4 col-md-6 mb-3">
+                            <a href="{{ asset(Storage::url($portofolio->image)) }}" data-lightbox="image-1" data-title="{{ $portofolio->description }}">
+                                <img class="mw-100" src="{{ asset(Storage::url($portofolio->image)) }}" alt="">
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    @endif
+
     @if($testimonies->count() > 2)
         <section id="testimonial" class="mt-5 people">
             <div class="pt-5">
@@ -136,7 +151,7 @@
                                             <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
                                         @endif
                                         <br>
-                                        <p class="description">{{ $testimony->testimoni }}</p>
+                                        <p class="description">{{ $testimony->testimonial }}</p>
                                     </div>
                                     <div class="author">
                                         <img class="rounded-circle" src="{{ asset(Storage::url($testimony->user->avatar)) }}">
@@ -150,6 +165,7 @@
             </div>
         </section>
     @endif
+
     <section id="contact" class="mt-5">
         <div class="pt-5">
             <h2 class="text-center font-weight-bold text-white mb-5 mt-3">{{ __('Contact') }}</h2>
@@ -192,17 +208,19 @@
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 <script src="{{ asset('js/leaflet.js') }}"></script>
 <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
+
+<script src="{{ asset('js/lightbox.js') }}"></script>
+
 <script>
     $(document).ready(function(){
         $('.owl-carousel').owlCarousel({
-			loop: true,
             margin:10,
             responsive:{
 				0:{
 					items: 1
 				},
 				600:{
-					items: 3
+					items: 1
 				},
 				1000:{
 					items: 3

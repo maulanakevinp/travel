@@ -97,10 +97,11 @@ class TourController extends Controller
      */
     public function show(Tour $tour, $slug)
     {
-        $tours = Tour::wherePackageId($tour->package_id)->orderBy('id','desc')->paginate(3);
+        $tours = Tour::wherePackageId($tour->package_id)->orderBy('id','desc')->take(3);
         if (Str::slug($tour->name) == $slug) {
             return view('tour.show', compact('tour','tours'));
         }
+
         return abort(404);
     }
 
@@ -146,10 +147,13 @@ class TourController extends Controller
                 ]);
             }
 
-            Gallery::create([
-                'tour_id'   => $tour->id,
-                'image'     => $request->image->store('public/gallery')
-            ]);
+            $data = [
+                'tour_id'       => $tour->id,
+                'is_portofolio' => $request->is_portofolio,
+                'image'         => $request->image->store('public/gallery')
+            ];
+
+            Gallery::create($data);
 
             return response()->json([
                 'success'   => true,

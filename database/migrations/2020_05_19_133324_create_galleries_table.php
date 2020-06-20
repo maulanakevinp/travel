@@ -17,6 +17,7 @@ class CreateGalleriesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('tour_id')->nullable();
             $table->unsignedBigInteger('company_id')->nullable();
+            $table->boolean('is_portofolio')->default(false);
             $table->string('image', 64);
             $table->text('description')->nullable();
 

@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
 <link rel="stylesheet" href="{{ asset("css/mystyle.css") }}">
 <link rel="stylesheet" href="{{ asset('css/lightbox.css') }}">
+<link rel="stylesheet" href="{{ asset('css/Testimonials.css') }}">
 @endsection
 
 @section('content')
@@ -18,12 +19,13 @@
             <li class="breadcrumb-item active" aria-current="page">{{ $tour->name }}</li>
         </ol>
     </nav>
+
     <div class="row mt-3">
         <div class="col-lg-8 mb-3">
             <div class="card bg-dark shadow">
                 <div class="card-body">
-                    <div class="owl-carousel">
-                        @foreach($tour->galleries as $gallery)
+                    <div id="owl-one" class="owl-carousel owl-theme">
+                        @foreach($tour->galleries->where('is_portofolio', 0) as $gallery)
                             <a href="{{ asset(Storage::url($gallery->image)) }}" data-lightbox="gallery"
                                 data-title="{{ $tour->name }}" @if($gallery->description)
                                 data-alt="{{ $gallery->description }}" @endif>
@@ -38,7 +40,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="col-lg-4 mb-3">
             <div class="card bg-dark shadow mb-3">
@@ -48,11 +49,11 @@
                 </div>
             </div>
 
-            <div class="card bg-dark shadow mb-3">
-                <div class="card-body">
-                    <h4>{{ __('Other tour packages') }}</h4>
-                    <ul class="list-unstyled">
-                        @if($tours)
+            @if($tours->count() > 1)
+                <div class="card bg-dark shadow mb-3">
+                    <div class="card-body">
+                        <h4>{{ __('Other tour packages') }}</h4>
+                        <ul class="list-unstyled">
                             @foreach($tours as $item)
                                 @if ($item->id != $tour->id)
                                     <hr>
@@ -71,15 +72,84 @@
                                     </li>
                                 @endif
                             @endforeach
-                        @else
-                            <h5 class="text-center mt-3">--- {{ __('Tour package not found') }} ---</h5>
-                        @endif
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-
+            @endif
         </div>
     </div>
+
+    @if ($tour->galleries->where('is_portofolio', 1)->count() > 1)
+        <div class="text-center mt-5">
+            <h2 class="font-weight-bold">Portofolio</h2>
+            <div class="row justify-content-center">
+                @foreach ($tour->galleries->where('is_portofolio',1) as $gallery)
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <a href="{{ asset(Storage::url($gallery->image)) }}" data-lightbox="portofolio-1" data-title="{{ $gallery->description }}">
+                            <img style="max-height: 400px" class="mw-100" src="{{ asset(Storage::url($gallery->image)) }}" alt="">
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    @if($tour->orders)
+        <section id="testimonial" class="mt-5">
+            <div class="pt-5">
+                <h2 class="text-center font-weight-bold text-white mt-3">{{ __('Testimonial') }}</h2>
+                <div id="owl-two" class="owl-carousel owl-theme">
+                    @foreach($tour->orders as $testimony)
+                        <div class="card bg-dark shadow testimonials-clean">
+                            <div class="card-body">
+                                <div class="item mb-0">
+                                    <div class="box">
+                                        @if($testimony->rating == 1)
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                        @elseif($testimony->rating == 2)
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                        @elseif($testimony->rating == 3)
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                        @elseif($testimony->rating == 4)
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                        @elseif($testimony->rating == 5)
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                        @endif
+                                        <br>
+                                        <p class="description">{{ $testimony->testimonial }}</p>
+                                    </div>
+                                    <div class="author">
+                                        <img class="rounded-circle" src="{{ asset(Storage::url($testimony->user->avatar)) }}">
+                                        <h5 class="name text-white">{{ $testimony->user->name }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
 </div>
 @endsection
 
@@ -88,7 +158,7 @@
     <script src="{{ asset('js/lightbox.js') }}"></script>
     <script>
         $(document).ready(function () {
-            $('.owl-carousel').owlCarousel({
+            $('#owl-one').owlCarousel({
                 loop: true,
                 autoplay: true,
                 autoplayTimeout: 2000,
@@ -105,6 +175,23 @@
                     }
                 }
             });
+
+            $('#owl-two').owlCarousel({
+                margin:10,
+                responsive:{
+                    0:{
+                        items: 1
+                    },
+                    600:{
+                        items: 1
+                    },
+                    1000:{
+                        items: 3
+                    }
+                }
+            });
+
+            $(".owl-dots").hide();
         });
 
     </script>

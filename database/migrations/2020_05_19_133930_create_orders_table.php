@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             $table->string('amount');
             $table->text('payment_no');
             $table->timestamp('expired');
+            $table->timestamp('paymentTime')->nullable();
             $table->string('status');
             $table->string('hometown');
             $table->tinyInteger('qty');
