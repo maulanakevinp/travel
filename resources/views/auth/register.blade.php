@@ -44,7 +44,7 @@
                             <label for="phone_emergency" class="col-md-4 col-form-label text-md-right">{{ __('Phone Emergency') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone_emergency" type="text" class="form-control @error('phone_emergency') is-invalid @enderror" name="phone_emergency" value="{{ old('phone_emergency') }}" required autocomplete="phone_emergency" autofocus>
+                                <input id="phone_emergency" type="text" class="form-control @error('phone_emergency') is-invalid @enderror" name="phone_emergency" value="{{ old('phone_emergency') }}" autocomplete="phone_emergency" autofocus>
 
                                 @error('phone_emergency')
                                     <span class="invalid-feedback" role="alert">

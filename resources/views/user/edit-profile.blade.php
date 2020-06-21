@@ -39,21 +39,27 @@
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <div class="form-group row mb-2">
-                                    <label for="name" class="col-md-3 col-form-label pr-0">{{ __('Name') }} :</label>
+                                    <label for="name" class="col-md-3 col-form-label pr-0">{{ __('Name') }}</label>
                                     <div class="col-md-9">
                                         <input id="name" name="name" type="text" class="form-control" value="{{ auth()->user()->name }}">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-2">
-                                    <label for="phone" class="col-md-3 col-form-label pr-0">{{ __('Phone') }} :</label>
+                                    <label for="phone" class="col-md-3 col-form-label pr-0">{{ __('Phone') }}</label>
                                     <div class="col-md-9">
                                         <input id="phone" name="phone" type="text" class="form-control" value="{{ auth()->user()->phone }}">
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-2">
+                                    <label for="phone_emergency" class="col-md-3 col-form-label pr-0">{{ __('Phone emergency') }}</label>
+                                    <div class="col-md-9">
+                                        <input id="phone_emergency" name="phone_emergency" type="text" class="form-control" value="{{ auth()->user()->phone_emergency }}">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group row mb-2">
-                                    <label for="address" class="col-md-3 col-form-label pr-0">{{ __('Address') }} :</label>
+                                    <label for="address" class="col-md-3 col-form-label pr-0">{{ __('Address') }}</label>
                                     <div class="col-md-9">
                                         <textarea name="address" id="address" class="form-control" rows="3" style="resize: none">{{ auth()->user()->address }}</textarea>
                                     </div>

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title',__('Transaction detail').' #'.$order->transaction_id)
+@section('title',__('Transaction detail').' #'.$order->id)
 
 @section('content')
 <div class="container">
@@ -13,7 +13,7 @@
                                 style="background-size: cover ;height: 64px; width: 64px;background-image: url('{{ asset(Storage::url($order->tour->galleries[0]->image)) }}')">
                             </div>
                             <div class="media-body">
-                                <a href="{{ route('tour.show',['tour' => $order->tour , 'slug' => Str::slug($order->tour->name)]) }}" class="mt-0 mb-1 block-with-text h5 text-white font-weight-bold">{{ $order->tour->name }}</a>
+                                <a href="{{ route('tour.show',['tour' => $order->tour , 'slug' => Str::slug($order->tour->name)]) }}" class="mt-0 mb-1 block-with-text h5 text-white font-weight-bold">{{ $order->tour->name }} #{{ $order->id }}</a>
                                 <h6 class="mt-0 mb-1">{{ __('Price') }} : Rp. {{ substr(number_format($order->tour->price, 2, ',', '.'),0,-3) }}</h6>
                             </div>
                         </li>
@@ -84,6 +84,12 @@
                             <p class="mb-0">{{ __('Nominal') }}</p>
                             <p class="h4">Rp. {{ substr(number_format($order->amount, 2, ',', '.'),0,-3) }}</p>
                             <p>{{ __('Deadline') }}<br>{{ date('d F Y, H:i:s', strtotime($order->expired)) }}</p>
+                            @can('member')
+                                <form action="{{ route('order.destroy', $order) }}" method="post">
+                                    @csrf @method('delete')
+                                    <button type="submit" class="btn btn-danger btn-block">Batalkan</button>
+                                </form>
+                            @endcan
                         @endif
                     @else
                         <h4>{{ __('Payment Success') }}</h4>

@@ -146,16 +146,14 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user = User::find(auth()->user()->id);
-        $request->validate([
-            'name'  => ['required', 'string', 'max:32'],
-            'phone'  => ['required', 'digits_between:6,13'],
-            'address' => ['required', 'string']
+        $data = $request->validate([
+            'name'              => ['required', 'string', 'max:32'],
+            'phone'             => ['required', 'digits_between:6,13'],
+            'phone_emergency'   => ['nullable', 'digits_between:6,13'],
+            'address'           => ['required', 'string']
         ]);
 
-        $user->name = $request->name;
-        $user->phone = $request->phone;
-        $user->address = $request->address;
-        $user->save();
+        $user->update($data);
 
         alert()->success(__('alert.success-update',['attribute' => __('Profile')]), __('Success'));
         return redirect()->back();

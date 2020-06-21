@@ -107,6 +107,7 @@
                                     <img id="img-avatar-header" src="{{ asset(Storage::url(auth()->user()->avatar)) }}" class="rounded-circle" width="32" height="32" alt="Frontted">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
+
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item {{ Request::segment(1) == "profil" ? "active" : "" }}" href="{{ route('profile') }}">{{ __('Profile') }}</a>
                                     <a class="dropdown-item {{ Request::segment(1) == "pengaturan" ? "active" : "" }}" href="{{ route('setting') }}">{{ __('Setting') }}</a>
@@ -116,8 +117,8 @@
                                         <a class="dropdown-item {{ Request::segment(1) == "gallery" ? "active" : "" }}" href="{{ route('gallery.index') }}">{{ __('Gallery') }}</a>
                                         <a class="dropdown-item {{ Request::segment(1) == "package" ? "active" : "" }}" href="{{ route('package.index') }}">{{ __('Package') }}</a>
                                         <a class="dropdown-item {{ Request::segment(1) == "tour" ? "active" : "" }}"    href="{{ route('tour.index') }}">{{ __('Tour') }}</a>
-                                        <a class="dropdown-item {{ Request::segment(1) == "order" ? "active" : "" }}"   href="{{ route('order.index') }}">{{ __('Transaction') }}</a>
                                     @endcan
+                                    <a class="dropdown-item {{ Request::segment(1) == "order" ? "active" : "" }}"   href="{{ route('order.index') }}">{{ __('Transaction') }}</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <i class="fas fa-fw fa-sign-out-alt"></i> {{ __('Logout') }}

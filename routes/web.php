@@ -27,22 +27,23 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::get('/setting', 'UserController@setting')->name('setting');
     Route::get('/profile', 'UserController@profile')->name('profile');
     Route::get('/edit-profile', 'UserController@editProfile')->name('edit-profile');
+
     Route::get('/checkout/{tour}/{slug}', 'OrderController@create')->name('order.create')->middleware('verified');
+    Route::get('/order', 'OrderController@index')->name('order.index');
     Route::get('/order/{order}', 'OrderController@show')->name('order.show');
     Route::post('/order/{tour}', 'OrderController@store')->name('order.store');
+
     Route::patch('/update-avatar/{user}', 'UserController@updateAvatar')->name('update-avatar');
     Route::patch('/update-setting', 'UserController@updateSetting')->name('update-setting');
     Route::patch('/update-profile', 'UserController@updateProfile')->name('update-profile');
-
 
     Route::group(['middleware' => ['can:admin']], function () {
         Route::resource('package', 'PackageController');
         Route::resource('gallery', 'GalleryController');
         Route::resource('company', 'CompanyController');
         Route::resource('tour', 'TourController')->except('show','index');
-        Route::resource('order', 'OrderController')->except('create','store','show');
+        Route::resource('order', 'OrderController')->except('index','create','store','show');
         Route::resource('user', 'UserController');
-
     });
 
 });
