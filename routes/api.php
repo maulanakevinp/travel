@@ -19,4 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/check-transaction/{id}', 'OrderController@checkTransaction')->name('check-transaction');
-Route::resource('user', 'Api\UserController');
+
+Route::group(['as' => 'api.'], function(){
+    Route::get('/users', 'ApiController@users')->name('users');
+    Route::get('/tour-gallery/{id}', 'ApiController@tourGallery')->name('tour-gallery');
+    Route::get('/order', 'ApiController@order')->name('order');
+    Route::get('/gallery', 'ApiController@gallery')->name('gallery');
+});

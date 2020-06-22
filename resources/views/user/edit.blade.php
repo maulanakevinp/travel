@@ -2,7 +2,7 @@
 @section('title', $user->name)
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/lightbox.css') }}">
+<link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}">
 @endsection
 
 @section('content')
@@ -12,7 +12,7 @@
             <div class="card shadow mt-5 bg-dark">
                 <div class="card-body">
                     <div class="img-thumbnail mb-3">
-                        <a href="{{ asset(Storage::url($user->avatar)) }}" data-lightbox="image-1" data-title="{{ __('Profil Photo') }}">
+                        <a href="{{ asset(Storage::url($user->avatar)) }}" data-fancybox>
                             <img id="img-avatar" class="mw-100" src="{{ asset(Storage::url($user->avatar)) }}" alt="">
                         </a>
                         <button id="btn-ganti-avatar" title="{{ __('Change Photo') }}" class="btn btn-dark" style="position: absolute; right: 25px; top: 25px">
@@ -97,7 +97,7 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/lightbox.js') }}"></script>
+<script src="{{ asset('js/jquery.fancybox.js') }}"></script>
 <script src="{{ asset('js/script.js') }}"></script>
     <script>
         $(document).ready(function () {

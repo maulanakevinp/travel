@@ -6,7 +6,7 @@
 <link href="{{ asset('css/Testimonials.css') }}" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
-<link rel="stylesheet" href="{{ asset('css/lightbox.css') }}">
+<link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}">
 
 <style>
 
@@ -99,7 +99,7 @@
                 <div class="row justify-content-center">
                     @foreach ($portofolios as $portofolio)
                         <div class="col-lg-4 col-md-6 mb-3">
-                            <a href="{{ asset(Storage::url($portofolio->image)) }}" data-lightbox="image-1" data-title="{{ $portofolio->description }}">
+                            <a href="{{ asset(Storage::url($portofolio->image)) }}" data-fancybox>
                                 <img class="mw-100" src="{{ asset(Storage::url($portofolio->image)) }}" alt="">
                             </a>
                         </div>
@@ -209,7 +209,7 @@
 <script src="{{ asset('js/leaflet.js') }}"></script>
 <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
 
-<script src="{{ asset('js/lightbox.js') }}"></script>
+<script src="{{ asset('js/jquery.fancybox.js') }}"></script>
 
 <script>
     $(document).ready(function(){

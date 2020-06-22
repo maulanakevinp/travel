@@ -17,30 +17,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
         $roles = Role::all();
-        if (request()->ajax()) {
-            return datatables()->of(User::with('role')->get())
-                ->addColumn('email', function($data){
-                    return '<a href="'.route('user.show',$data->id).'">'.$data->email.'</a>';
-                })
-                ->addColumn('created_at', function($data){
-                    return date('d F Y, H:i:s', strtotime($data->created_at));
-                })
-                ->addColumn('action', function($data){
-                    return '<a href="'. route('user.edit', $data->id) .'" title="'. __('Edit') .'" class="btn btn-sm btn-success">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <button class="btn btn-sm btn-danger delete" data-id="'. $data->id .'" title="'. __('Delete') .'">
-                                <i class="fas fa-trash"></i>
-                            </button>';
-                })
-                ->rawColumns(['action','email','created_at'])
-                ->make(true);
-        }
-        return view('user.index', compact('users','roles'));
+        return view('user.index', compact('roles'));
     }
 
     /**

@@ -100,7 +100,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('user.index') }}",
+                url: "{{ route('api.users') }}",
             },
             columns: [
                 {

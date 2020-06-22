@@ -111,18 +111,9 @@ class TourController extends Controller
      * @param  \App\Tour  $tour
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tour $tour)
+    public function edit(Request $request,Tour $tour)
     {
         $packages = Package::all();
-
-        if (request()->ajax()) {
-            return response()->json([
-                'success'   => true,
-                'message'   => __('alert.success-get', ['attribute' => 'images']),
-                'data'      => $tour->galleries
-            ],200);
-        }
-
         return view('tour.edit', compact('tour','packages'));
     }
 
@@ -135,7 +126,7 @@ class TourController extends Controller
      */
     public function update(Request $request, Tour $tour)
     {
-        if(request()->ajax()){
+        if($request->ajax()){
             $validator = Validator::make($request->all(),[
                 'image' => ['required', 'image', 'max:2048']
             ]);

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
 <link rel="stylesheet" href="{{ asset("css/mystyle.css") }}">
-<link rel="stylesheet" href="{{ asset('css/lightbox.css') }}">
+<link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}">
 <link rel="stylesheet" href="{{ asset('css/Testimonials.css') }}">
 @endsection
 
@@ -26,11 +26,8 @@
                 <div class="card-body">
                     <div id="owl-one" class="owl-carousel owl-theme">
                         @foreach($tour->galleries->where('is_portofolio', 0) as $gallery)
-                            <a href="{{ asset(Storage::url($gallery->image)) }}" data-lightbox="gallery"
-                                data-title="{{ $tour->name }}" @if($gallery->description)
-                                data-alt="{{ $gallery->description }}" @endif>
-                                <img src="{{ asset(Storage::url($gallery->image)) }}" class="mw-100"
-                                    alt="Gambar {{ $tour->name }} {{ $gallery->id }}">
+                            <a href="{{ asset(Storage::url($gallery->image)) }}" data-fancybox>
+                                <img src="{{ asset(Storage::url($gallery->image)) }}" class="mw-100" alt="Gambar {{ $tour->name }} {{ $gallery->id }}">
                             </a>
                         @endforeach
                     </div>
@@ -85,7 +82,7 @@
             <div class="row justify-content-center">
                 @foreach ($tour->galleries->where('is_portofolio',1) as $gallery)
                     <div class="col-lg-4 col-md-6 mb-3">
-                        <a href="{{ asset(Storage::url($gallery->image)) }}" data-lightbox="portofolio-1" data-title="{{ $gallery->description }}">
+                        <a href="{{ asset(Storage::url($gallery->image)) }}" data-fancybox>
                             <img style="max-height: 400px" class="mw-100" src="{{ asset(Storage::url($gallery->image)) }}" alt="">
                         </a>
                     </div>
@@ -155,7 +152,7 @@
 
 @push('scripts')
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('js/lightbox.js') }}"></script>
+    <script src="{{ asset('js/jquery.fancybox.js') }}"></script>
     <script>
         $(document).ready(function () {
             $('#owl-one').owlCarousel({

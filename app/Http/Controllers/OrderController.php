@@ -24,49 +24,9 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $ipaymu = $this->ipaymu;
-        if (request()->ajax()) {
-            if (auth()->user()->role->name == 'Admin') {
-                return datatables()->of(Order::with('tour')->get())
-                    ->addColumn('tour_name', function($data){
-                        return '<a href="'.route('tour.show',['tour' => $data->tour , 'slug' => Str::slug($data->tour->name)]).'">'.$data->tour->name.'</a>';
-                    })
-                    ->addColumn('nominal', function($data){
-                        return 'Rp. '.substr(number_format($data->amount, 2, ',', '.'),0,-3);
-                    })
-                    ->addColumn('expired', function($data){
-                        return date('d F Y, H:i:s', strtotime($data->expired));
-                    })
-                    ->addColumn('action', function($data){
-                        return '<a href="'. route('order.show', $data->id) .'" title="'. __('Detail') .'" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i>
-                                </a>';
-                    })
-                    ->rawColumns(['action','tour_name', 'nominal', 'expired'])
-                    ->make(true);
-            } else {
-                return datatables()->of(Order::with('tour')->where('user_id', auth()->user()->id)->get())
-                    ->addColumn('tour_name', function($data){
-                        return '<a href="'.route('tour.show',['tour' => $data->tour , 'slug' => Str::slug($data->tour->name)]).'">'.$data->tour->name.'</a>';
-                    })
-                    ->addColumn('nominal', function($data){
-                        return 'Rp. '.substr(number_format($data->amount, 2, ',', '.'),0,-3);
-                    })
-                    ->addColumn('expired', function($data){
-                        return date('d F Y, H:i:s', strtotime($data->expired));
-                    })
-                    ->addColumn('action', function($data){
-                        return '<a href="'. route('order.show', $data->id) .'" title="'. __('Detail') .'" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i>
-                                </a>';
-                    })
-                    ->rawColumns(['action','tour_name', 'nominal', 'expired'])
-                    ->make(true);
-            }
-
-        }
         return view('order.index', compact('ipaymu'));
     }
 
@@ -161,11 +121,9 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        if(request()->ajax()){
-            $order->paymentTime = $request->paymentTime;
-            $order->status = $request->status;
-            $order->save();
-        }
+        $order->paymentTime = $request->paymentTime;
+        $order->status = $request->status;
+        $order->save();
     }
 
     /**

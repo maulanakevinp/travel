@@ -13,19 +13,9 @@ class GalleryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $galleries = Gallery::whereCompanyId(1)->get();
-
-        if (request()->ajax()) {
-            return response()->json([
-                'success'   => true,
-                'message'   => __('alert.success-get', ['attribute' => 'images']),
-                'data'      => $galleries
-            ],200);
-        }
-
-        return view('galllery.index', compact('galleries'));
+        return view('galllery.index');
     }
 
     /**

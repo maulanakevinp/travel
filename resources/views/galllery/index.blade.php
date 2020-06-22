@@ -2,7 +2,7 @@
 @section('title', __('Gallery'))
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('css/lightbox.css') }}">
+<link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}">
 @endsection
 
 @section('content')
@@ -15,10 +15,10 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/lightbox.js') }}"></script>
+<script src="{{ asset('js/jquery.fancybox.js') }}"></script>
 <script>
     function loadImages() {
-        $.getJSON("{{ route('gallery.index') }}", function(result){
+        $.getJSON("{{ route('api.gallery') }}", function(result){
             $("#field-images").html('');
             $.each(result.data, function(i, data){
                 let path = data.image;
@@ -26,7 +26,7 @@
                 if (i == 0) {
                     $("#field-images").append(`
                         <div class="col-lg-4 col-sm-6 mb-3">
-                            <a href="${baseURL}/${path}" data-lightbox="image-1" data-title="Images">
+                            <a href="${baseURL}/${path}" data-fancybox>
                                 <img id="img-image" class="mw-100" style="max-height: 300px" src="${baseURL}/${path}" alt="${baseURL}/${path}">
                             </a>
                             <button id="change-image" onclick="$('#input-image').click()" data-id="${data.id}" title="{{ __('Change Photo') }}" class="btn btn-dark ml-3" style="position: absolute; top: 0; z-index: 1; left: 0;">
@@ -37,7 +37,7 @@
                 } else {
                     $("#field-images").append(`
                         <div class="col-lg-4 col-sm-6 mb-3">
-                            <a href="${baseURL}/${path}" data-lightbox="image-1" data-title="Images">
+                            <a href="${baseURL}/${path}" data-fancybox>
                                 <img class="mw-100" style="max-height: 300px" src="${baseURL}/${path}" alt="">
                             </a>
                             <form class="mb-0 hapus-foto" data-id="${data.id}" action="javascript:;" method="post">
