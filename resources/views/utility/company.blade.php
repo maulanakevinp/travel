@@ -22,7 +22,7 @@
             <h5 class="m-0 pt-1 font-weight-bold">{{ __('Company') }}</h5>
         </div>
         <div class="card-body">
-            <form action="{{ route('company.update',$company) }}" method="post">
+            <form action="{{ route('company.update',$company) }}" method="post" enctype="multipart/form-data">
                 @csrf @method('patch')
                 <input type="hidden" name="id" value="{{ $company->id }}">
                 <div class="row justify-content-center">

@@ -29,7 +29,7 @@ class CompanyController extends Controller
     public function update(Request $request, Company $company)
     {
         $request->validate([
-            'logo'              => ['nullable', 'image', 'max:2048'],
+            'logo'              => ['image', 'max:2048'],
             'name'              => ['required', 'string', 'max:32'],
             'email'             => ['required', 'email', 'max:32'],
             'description'       => ['required', 'string'],
