@@ -59,7 +59,7 @@
                         <label for="portofolio">Portofolio</label>
                         <div id="field-portofolio" class="row"></div>
                     </div>
-                    <input id="input-add-image" type="file" name="images" accept="image/*" class="images" style="display: none">
+                    <input id="input-add-image" type="file" name="images" accept="image/*,video/*" class="images" style="display: none">
                 </div>
             </div>
         </div>
@@ -107,18 +107,33 @@
                         `);
                     }
                 } else {
-                    $("#field-portofolio").append(`
-                        <div class="col-lg-4 col-sm-6 mb-3">
-                            <a href="${baseURL}/${path}" data-fancybox>
-                                <img class="mw-100" style="max-height: 300px" src="${baseURL}/${path}" alt="">
-                            </a>
-                            <form class="mb-0 hapus-foto" data-id="${data.id}" action="javascript:;" method="post">
-                                <input type="hidden" name="_token" value="${_token}">
-                                <input type="hidden" name="_method" value="delete">
-                                <button type="submit" title="{{ __('Delete') }}" class="btn btn-danger" style="position: absolute; top: 0; z-index: 1;" onclick="return confirm('Are you sure want to delete this image?');"><i class="fas fa-trash"></i></button>
-                            </form>
-                        </div>
-                    `);
+                    if (path.split('.').pop() == 'jpg' || path.split('.').pop() == 'jpeg' || path.split('.').pop() == 'png' || path.split('.').pop() == 'jpg') {
+                        $("#field-portofolio").append(`
+                            <div class="col-lg-4 col-sm-6 mb-3">
+                                <a href="${baseURL}/${path}" data-fancybox>
+                                    <img class="mw-100" style="max-height: 300px" src="${baseURL}/${path}" alt="">
+                                </a>
+                                <form class="mb-0 hapus-foto" data-id="${data.id}" action="javascript:;" method="post">
+                                    <input type="hidden" name="_token" value="${_token}">
+                                    <input type="hidden" name="_method" value="delete">
+                                    <button type="submit" title="{{ __('Delete') }}" class="btn btn-danger" style="position: absolute; top: 0; z-index: 1;" onclick="return confirm('Are you sure want to delete this image?');"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </div>
+                        `);
+                    } else {
+                        $("#field-portofolio").append(`
+                            <div class="col-lg-4 col-sm-6 mb-3">
+                                <a href="${baseURL}/${path}" data-fancybox>
+                                    <video class="mw-100" style="max-height: 300px"  src="${baseURL}/${path}"></video>
+                                </a>
+                                <form class="mb-0 hapus-foto" data-id="${data.id}" action="javascript:;" method="post">
+                                    <input type="hidden" name="_token" value="${_token}">
+                                    <input type="hidden" name="_method" value="delete">
+                                    <button type="submit" title="{{ __('Delete') }}" class="btn btn-danger" style="position: absolute; top: 0; z-index: 1;" onclick="return confirm('Are you sure want to delete this image?');"><i class="fas fa-trash"></i></button>
+                                </form>
+                            </div>
+                        `);
+                    }
                 }
             });
             $("#field-images").append(`

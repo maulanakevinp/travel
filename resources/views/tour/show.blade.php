@@ -81,9 +81,17 @@
             <h2 class="font-weight-bold">Portofolio</h2>
             <div class="row justify-content-center">
                 @foreach ($tour->galleries->where('is_portofolio',1) as $gallery)
+                    @php
+                        $fileparts = explode('.', $gallery->image);
+                        $filetype = array_pop($fileparts);
+                    @endphp
                     <div class="col-lg-4 col-md-6 mb-3">
                         <a href="{{ asset(Storage::url($gallery->image)) }}" data-fancybox>
-                            <img style="max-height: 400px" class="mw-100" src="{{ asset(Storage::url($gallery->image)) }}" alt="">
+                            @if ($filetype == 'jpg' || $filetype == 'jpeg' || $filetype == 'png' || $filetype == 'jpg')
+                                <img class="mw-100" src="{{ asset(Storage::url($gallery->image)) }}" alt="">
+                            @else
+                                <video class="mw-100" src="{{ asset(Storage::url($gallery->image)) }}"></video>
+                            @endif
                         </a>
                     </div>
                 @endforeach

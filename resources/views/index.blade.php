@@ -98,9 +98,17 @@
                 <h2 class="text-center font-weight-bold text-white mb-5 mt-3">{{ __('Portofolio') }}</h2>
                 <div class="row justify-content-center">
                     @foreach ($portofolios as $portofolio)
+                        @php
+                            $fileparts = explode('.', $portofolio->image);
+                            $filetype = array_pop($fileparts);
+                        @endphp
                         <div class="col-lg-4 col-md-6 mb-3">
                             <a href="{{ asset(Storage::url($portofolio->image)) }}" data-fancybox>
-                                <img class="mw-100" src="{{ asset(Storage::url($portofolio->image)) }}" alt="">
+                                @if ($filetype == 'jpg' || $filetype == 'jpeg' || $filetype == 'png' || $filetype == 'jpg')
+                                    <img class="mw-100" src="{{ asset(Storage::url($portofolio->image)) }}" alt="">
+                                @else
+                                    <video class="mw-100" src="{{ asset(Storage::url($portofolio->image)) }}"></video>
+                                @endif
                             </a>
                         </div>
                     @endforeach

@@ -146,6 +146,7 @@
     <script>
         const baseURL = $("meta[name='base-url']").attr('content');
         const _token = $("meta[name='csrf-token']").attr('content');
+        setTimeout(() => { console.clear(); }, 100);
     </script>
 
     @stack('scripts')
