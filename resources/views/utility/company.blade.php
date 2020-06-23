@@ -51,16 +51,24 @@
                     </div>
                     <div class="col-lg-4 mb-1">
                         <div class="form-group">
+                            <label for="instagram">{{ __('Instagram') }}</label>
+                            <input type="text" name="instagram" id="instagram" class="form-control" value="{{ $company->instagram }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="youtube">{{ __('youtube') }}</label>
+                            <input type="text" name="youtube" id="youtube" class="form-control" value="{{ $company->youtube }}">
+                        </div>
+                        <div class="form-group">
                             <label for="address">{{ __('Address') }}</label>
-                            <textarea style="resize:none" class="form-control" name="address" id="address" rows="3"  required>{{ $company->address }}</textarea>
+                            <textarea style="resize:none" class="form-control" name="address" id="address" rows="1" required>{{ $company->address }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="description">{{ __('Description') }}</label>
-                            <textarea style="resize:none" class="form-control" name="description" id="description" rows="5"  required>{{ $company->description }}</textarea>
+                            <textarea style="resize:none" class="form-control" name="description" id="description" rows="3"  required>{{ $company->description }}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="testimonial">{{ __('Testimonial') }}</label>
-                            <textarea style="resize:none" class="form-control" name="testimonial" id="testimonial" rows="5"  required>{{ $company->testimonial }}</textarea>
+                            <textarea style="resize:none" class="form-control" name="testimonial" id="testimonial" rows="2"  required>{{ $company->testimonial }}</textarea>
                         </div>
                     </div>
                     <div class="col-lg-4 mb-1">

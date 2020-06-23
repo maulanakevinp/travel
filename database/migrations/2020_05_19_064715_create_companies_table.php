@@ -22,6 +22,8 @@ class CreateCompaniesTable extends Migration
             $table->text('address');
             $table->string('phone', 16);
             $table->string('whatsapp', 16);
+            $table->string('instagram')->nullable();
+            $table->string('youtube')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->text('testimonial')->nullable();

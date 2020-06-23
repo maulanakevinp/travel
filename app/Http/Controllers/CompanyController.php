@@ -37,6 +37,8 @@ class CompanyController extends Controller
             'testimonial'       => ['required', 'string'],
             'phone'             => ['required', 'digits_between:6,13'],
             'whatsapp'          => ['required', 'digits_between:6,13'],
+            'instagram'         => ['nullable', 'string', 'max:191'],
+            'youtube'           => ['nullable', 'string', 'max:191'],
             'virtual_account'   => ['required', 'digits:16'],
             'api_key'           => ['required', 'string', 'max:64'],
             'latitude'          => ['required', 'numeric'],
@@ -55,6 +57,8 @@ class CompanyController extends Controller
         $company->testimonial   = $request->testimonial;
         $company->phone         = $request->phone;
         $company->whatsapp      = $request->whatsapp;
+        $company->instagram     = $request->instagram;
+        $company->youtube       = $request->youtube;
         $company->va            = $request->virtual_account;
         $company->latitude      = $request->latitude;
         $company->longitude     = $request->longitude;

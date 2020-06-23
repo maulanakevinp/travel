@@ -29,8 +29,20 @@
     <script src="{{ asset('js/sweetalert.min.js') }}"></script>
 
     <style>
-        html {
+        html, body {
             scroll-behavior: smooth;
+            height: 100%;
+            margin: 0;
+        }
+
+        .content {
+            padding: 20px;
+            min-height: 100%;
+            margin: 0 auto -50px;
+        }
+
+        .push {
+            height: 50px;
         }
     </style>
     @yield('styles')
@@ -38,7 +50,7 @@
 
 <body style="background-color:#1c1e21">
     @include('sweet::alert')
-    <div id="app" class="text-white">
+    <div id="app" class="text-white content">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm font-weight-bold fixed-top">
             <div class="container">
                 <a class="navbar-brand text-monospace" href="{{ url('/') }}">
@@ -142,7 +154,19 @@
         <main style="margin-top: 100px" class="mb-5">
             @yield('content')
         </main>
+        <div class="push"></div>
     </div>
+    <footer class="bg-dark py-3 text-white footer">
+        <div class="container text-center">
+            @if ($company->instagram && $company->youtube)
+                <div class="mb-3">
+                    <a href="{{ $company->instagram }}" title="Instagram" class="btn btn-secondary rounded-circle"><i class="fab fa-instagram fa-2x"></i></a>
+                    <a href="{{ $company->youtube }}" title="Youtube" class="btn btn-secondary rounded-circle"><i class="fab fa-youtube fa-2x"></i></a>
+                </div>
+            @endif
+            <div>Copyright &copy; {{ $company->name }} {{ now()->year }}</div>
+        </div>
+    </footer>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
