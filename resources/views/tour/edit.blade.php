@@ -60,6 +60,7 @@
                         <div id="field-portofolio" class="row"></div>
                     </div>
                     <input id="input-add-image" type="file" name="images" accept="image/*,video/*" class="images" style="display: none">
+                    <input id="input-image" type="file" name="images" accept="image/*" class="images" style="display: none">
                 </div>
             </div>
         </div>
