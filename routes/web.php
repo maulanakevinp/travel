@@ -21,7 +21,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/tour', 'TourController@index')->name('tour.index');
 Route::get('/tour-detail/{tour}/{slug}', 'TourController@show')->name('tour.show');
 Route::get('/tour-package/{package}/{slug}', 'TourController@package')->name('tour.package');
-
 Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::get('/setting', 'UserController@setting')->name('setting');

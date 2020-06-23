@@ -22,9 +22,10 @@ class ApiController extends Controller
         ],200);
     }
 
-    public function order()
+    public function order($id)
     {
-        if (auth()->user()->role->name == 'Admin') {
+        $user = User::find($id);
+        if ($user->role->name == 'Admin') {
             return datatables()->of(Order::with('tour')->get())
                 ->addColumn('tour_name', function($data){
                     return '<a href="'.route('tour.show',['tour' => $data->tour , 'slug' => Str::slug($data->tour->name)]).'">'.$data->tour->name.'</a>';
@@ -43,7 +44,7 @@ class ApiController extends Controller
                 ->rawColumns(['action','tour_name', 'nominal', 'expired'])
                 ->make(true);
         } else {
-            return datatables()->of(Order::with('tour')->where('user_id', auth()->user()->id)->get())
+            return datatables()->of(Order::with('tour')->where('user_id', $id)->get())
                 ->addColumn('tour_name', function($data){
                     return '<a href="'.route('tour.show',['tour' => $data->tour , 'slug' => Str::slug($data->tour->name)]).'">'.$data->tour->name.'</a>';
                 })

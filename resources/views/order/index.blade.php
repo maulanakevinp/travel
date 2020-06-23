@@ -63,7 +63,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('api.order') }}",
+                url: "{{ route('api.order', auth()->user()->id) }}",
             },
             columns: [
                 {

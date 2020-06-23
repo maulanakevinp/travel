@@ -23,6 +23,6 @@ Route::get('/check-transaction/{id}', 'OrderController@checkTransaction')->name(
 Route::group(['as' => 'api.'], function(){
     Route::get('/users', 'ApiController@users')->name('users');
     Route::get('/tour-gallery/{id}', 'ApiController@tourGallery')->name('tour-gallery');
-    Route::get('/order', 'ApiController@order')->name('order');
+    Route::get('/order/{id}', 'ApiController@order')->name('order');
     Route::get('/gallery', 'ApiController@gallery')->name('gallery');
 });
