@@ -73,6 +73,7 @@
 
 <script>
     let is_portofolio = null;
+    let img_loading = null;
     function loadImages() {
         $.getJSON("{{ route('api.tour-gallery', $tour->id) }}", function(result){
             $("#field-images").html('');
@@ -138,19 +139,20 @@
             });
             $("#field-images").append(`
                 <div class="col-lg-4 col-sm-6">
-                    <img onclick="clickUpload(0)" class="mw-100 upload-image" style="max-height: 300px" src="{{ asset('images/upload.jpg') }}" alt="">
+                    <img onclick="clickUpload(0, this)" class="mw-100 upload-image" style="max-height: 300px" src="{{ asset('images/upload.jpg') }}" alt="">
                 </div>
             `);
             $("#field-portofolio").append(`
                 <div class="col-lg-4 col-sm-6">
-                    <img onclick="clickUpload(1)" class="mw-100 upload-image" style="max-height: 300px" src="{{ asset('images/upload.jpg') }}" alt="">
+                    <img onclick="clickUpload(1, this)" class="mw-100 upload-image" style="max-height: 300px" src="{{ asset('images/upload.jpg') }}" alt="">
                 </div>
             `);
         });
     }
 
-    function clickUpload (param) {
+    function clickUpload (param, img) {
         is_portofolio = param;
+        img_loading = img;
         $('#input-add-image').click();
     }
 
@@ -177,7 +179,7 @@
                     cache: false,
                     processData: false,
                     beforeSend: function () {
-                        $(this).siblings('img').attr('src', baseURL + '/storage/loading.gif');
+                        img_loading.src = baseURL + '/storage/loading.gif';
                     },
                     success: function (data) {
                         if (data.success) {
@@ -189,6 +191,7 @@
 
                             loadImages();
                             param = null;
+                            img_loading = null;
                         } else {
                             swal({
                                 icon: 'error',
@@ -198,6 +201,7 @@
 
                             loadImages();
                             param = null;
+                            img_loading = null;
                         }
                     }
                 });
