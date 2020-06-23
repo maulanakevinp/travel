@@ -128,7 +128,7 @@ class TourController extends Controller
     {
         if($request->ajax()){
             $validator = Validator::make($request->all(),[
-                'image' => ['required', 'mimetypes:image/jpg,image/png,image/jpeg,video/avi,video/mpeg,video/mp4,video/3gp', 'max:204800']
+                'image' => ['required', 'mimetypes:image/jpg,image/png,image/jpeg,video/avi,video/mpeg,video/mp4,video/3gp','max:128000']
             ]);
 
             if ($validator->fails()) {
