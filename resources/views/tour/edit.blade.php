@@ -74,6 +74,7 @@
 <script>
     let is_portofolio = null;
     let img_loading = null;
+
     function loadImages() {
         $.getJSON("{{ route('api.tour-gallery', $tour->id) }}", function(result){
             $("#field-images").html('');
