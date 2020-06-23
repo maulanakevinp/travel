@@ -55,7 +55,7 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ url('/#about') }}">{{ __('About') }}</a>
+                                href="{{ url('') }}">{{ __('Home') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link"
@@ -72,6 +72,10 @@
                                     href="{{ url('/#testimonial') }}">{{ __('Testimonial') }}</a>
                             </li>
                         @endif
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ url('/#about') }}">{{ __('About') }}</a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link"
                                 href="{{ url('/#contact') }}">{{ __('Contact') }}</a>
