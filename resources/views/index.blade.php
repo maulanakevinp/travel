@@ -121,10 +121,11 @@
         </section>
     @endif
 
-    @if($testimonies->count() > 2)
+    @if($testimonies->count() >= 1)
         <section id="testimonial" class="mt-5 people">
             <div class="pt-5">
                 <h2 class="text-center font-weight-bold text-white mb-5 mt-3">{{ __('Testimoni') }}</h2>
+                <p class="text-center">{{ $company->testimonial }}</p>
                 <div class="owl-carousel">
                     @foreach($testimonies as $testimony)
                         <div class="card bg-dark shadow testimonials-clean">

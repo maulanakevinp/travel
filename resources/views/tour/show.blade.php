@@ -99,7 +99,7 @@
         </div>
     @endif
 
-    @if($tour->orders)
+    @if($tour->orders->count() >= 1)
         <section id="testimonial" class="mt-5">
             <div class="pt-5">
                 <h2 class="text-center font-weight-bold text-white mt-3">{{ __('Testimonial') }}</h2>
