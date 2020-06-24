@@ -44,10 +44,6 @@
         .push {
             height: 50px;
         }
-
-        .judul {
-            font-family: inherit;
-        }
     </style>
     @yield('styles')
 </head>
@@ -57,7 +53,7 @@
     <div id="app" class="text-white content">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm font-weight-bold fixed-top">
             <div class="container">
-                <a class="navbar-brand judul" href="{{ url('/') }}">
+                <a class="navbar-brand text-monospace" href="{{ url('/') }}">
                     {{ $company->name }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
