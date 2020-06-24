@@ -9,9 +9,13 @@
 <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}">
 
 <style>
-
-    .wisata:hover {
+    .wisata {
+        background-color: transparent;
+        border: 2px solid white;
         color: white;
+    }
+    .wisata:hover {
+        color: yellow;
         background-color: gray;
     }
 
