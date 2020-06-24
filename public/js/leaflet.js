@@ -15,4 +15,4 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 var marker = L.marker([latitude, longitude]).addTo(mymap);
 marker.bindPopup(`
 <img src="`+ logo +`" alt="logo" heigth="100px" width="100px">
-<br>We are here`).openPopup();
+<p class="text-center">We are here<p>`).openPopup();
