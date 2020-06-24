@@ -96,7 +96,7 @@
                                 <button id="qris" class="btn btn-link text-white btn-block text-left collapsed" type="button"
                                     data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
                                     aria-controls="collapseTwo">
-                                    {{ __('QRIS') }}
+                                    {{ __('QRIS (Scan QR)') }}
                                 </button>
                             </h2>
                         </div>
