@@ -142,7 +142,7 @@
             }
 
             checkTransaction();
-            setInterval(checkTransaction, 10000);
+            setInterval(checkTransaction, 5000);
         </script>
     @endif
 @endpush
