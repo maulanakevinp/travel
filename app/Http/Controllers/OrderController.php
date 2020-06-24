@@ -52,16 +52,16 @@ class OrderController extends Controller
     public function store(Request $request, Tour $tour)
     {
         $request->validate([
-            'tanggal_berangkat' => ['required', 'date', 'after:now', new Tanggal($request->tanggal_berangkat, $request->tanggal_pulang)],
-            'tanggal_pulang'    => ['required', 'date', 'after:tanggal_berangkat', new Tanggal($request->tanggal_berangkat, $request->tanggal_pulang)],
+            'date_start'        => ['required', 'date', 'after:now', new Tanggal($request->date_start, $request->date_end)],
+            'date_end'          => ['required', 'date', 'after:date_start', new Tanggal($request->date_start, $request->date_end)],
             'quantity'          => ['required', 'numeric', 'min:1'],
             'paymentMethod'     => ['required', 'string', 'max:4'],
             'paymentChannel'    => ['required', 'string', 'max:8'],
-            'asal'              => ['required', 'string'],
-            'keterangan'        => ['nullable', 'string'],
+            'hometown'          => ['required', 'string'],
+            'note'              => ['nullable', 'string'],
         ]);
 
-        $amount = $tour->price * $request->quantity * Carbon::parse($request->tanggal_pulang)->diffInDays(Carbon::parse($request->tanggal_berangkat));
+        $amount = $tour->price * $request->quantity * Carbon::parse($request->date_end)->diffInDays(Carbon::parse($request->date_start));
         $this->ipaymu->setBuyer([
             'name'      => auth()->user()->name,
             'phone'     => auth()->user()->phone,
@@ -88,10 +88,10 @@ class OrderController extends Controller
             'expired'           => $ipaymu['Data']['Expired'],
             'status'            => 'Pending',
             'qty'               => $request->quantity,
-            'asal'              => $request->asal,
-            'keterangan'        => $request->keterangan,
-            'tanggal_berangkat' => date('Y-m-d H:i:s',strtotime($request->tanggal_berangkat)),
-            'tanggal_pulang'    => date('Y-m-d H:i:s',strtotime($request->tanggal_pulang)),
+            'hometown'          => $request->hometown,
+            'note'              => $request->note,
+            'date_start'        => date('Y-m-d H:i:s',strtotime($request->date_start)),
+            'date_end'          => date('Y-m-d H:i:s',strtotime($request->date_end)),
         ]);
 
         return redirect()->route('order.show', ['order' => $order]);
