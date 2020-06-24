@@ -83,7 +83,7 @@ class OrderController extends Controller
             'transaction_id'    => $ipaymu['Data']['TransactionId'],
             'via'               => $request->paymentMethod,
             'channel'           => $request->paymentChannel,
-            'total'             => $amount,
+            'amount'            => $amount,
             'payment_no'        => $ipaymu['Data']['PaymentNo'],
             'expired'           => $ipaymu['Data']['Expired'],
             'status'            => 'Pending',
