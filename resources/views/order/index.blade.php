@@ -93,7 +93,7 @@
                     searchable:false,
                 },
             ],
-            orderable: [1,'desc']
+            order: [[ 0, "desc" ]],
         });
     });
 </script>
