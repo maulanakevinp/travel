@@ -27,6 +27,13 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $ipaymu = $this->ipaymu;
+        $orders = Order::all();
+        foreach ($orders as $order) {
+            if ($order->paymentTime == null && $order->expired < now()) {
+                $order->status = 'Expired';
+                $order->save();
+            }
+        }
         return view('order.index', compact('ipaymu'));
     }
 
@@ -105,6 +112,11 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        if ($order->paymentTime == null && $order->expired < now()) {
+            $order->status = 'Expired';
+            $order->save();
+        }
+
         if (auth()->user()->role->name == "Admin" || auth()->user()->id == $order->user_id) {
             return view('order.show', compact('order'));
         }
