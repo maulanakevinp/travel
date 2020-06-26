@@ -99,57 +99,59 @@
         </div>
     @endif
 
-    @if($tour->orders->count() >= 1)
+    @if($tour->orders->count() >= 1 && $tour->orders[0]->rating && $tour->orders[0]->testimonial)
         <section id="testimonial" class="mt-5">
             <div class="pt-5">
                 <h2 class="text-center font-weight-bold text-white mt-3">{{ __('Testimonial') }}</h2>
                 <div id="owl-two" class="owl-carousel owl-theme">
                     @foreach($tour->orders as $testimony)
-                        <div class="card bg-dark shadow testimonials-clean">
-                            <div class="card-body">
-                                <div class="item mb-0">
-                                    <div class="box">
-                                        @if($testimony->rating == 1)
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
-                                        @elseif($testimony->rating == 2)
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
-                                        @elseif($testimony->rating == 3)
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
-                                        @elseif($testimony->rating == 4)
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
-                                        @elseif($testimony->rating == 5)
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                            <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
-                                        @endif
-                                        <br>
-                                        <p class="description">{{ $testimony->testimonial }}</p>
-                                    </div>
-                                    <div class="author">
-                                        <img class="rounded-circle" src="{{ asset(Storage::url($testimony->user->avatar)) }}">
-                                        <h5 class="name text-white">{{ $testimony->user->name }}</h5>
+                        @if ($testimony->rating && $testimony->testimonial)
+                            <div class="card bg-dark shadow testimonials-clean">
+                                <div class="card-body">
+                                    <div class="item mb-0">
+                                        <div class="box">
+                                            @if($testimony->rating == 1)
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                            @elseif($testimony->rating == 2)
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                            @elseif($testimony->rating == 3)
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                            @elseif($testimony->rating == 4)
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star-empty.svg')) }}">
+                                            @elseif($testimony->rating == 5)
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                                <img height="20px" class="mr-0" src="{{ asset(Storage::url('star.svg')) }}">
+                                            @endif
+                                            <br>
+                                            <p class="description">{{ $testimony->testimonial }}</p>
+                                        </div>
+                                        <div class="author">
+                                            <img class="rounded-circle" src="{{ asset(Storage::url($testimony->user->avatar)) }}">
+                                            <h5 class="name text-white">{{ $testimony->user->name }}</h5>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     @endforeach
                 </div>
             </div>

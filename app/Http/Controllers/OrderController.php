@@ -155,4 +155,14 @@ class OrderController extends Controller
     {
         return $this->ipaymu->checkTransaction($id);
     }
+
+    public function testimonial(Request $request, Order $order)
+    {
+        $order->rating = $request->rating;
+        $order->testimonial = $request->testimonial;
+        $order->save();
+
+        alert()->success(__('alert.success-update',['attribute' => 'Testimonial']), __('Success'));
+        return redirect()->back();
+    }
 }

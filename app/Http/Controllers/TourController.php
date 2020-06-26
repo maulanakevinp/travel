@@ -97,7 +97,7 @@ class TourController extends Controller
      */
     public function show(Tour $tour, $slug)
     {
-        $tours = Tour::wherePackageId($tour->package_id)->orderBy('id','desc')->take(3);
+        $tours = Tour::wherePackageId($tour->package_id)->orderBy('id','desc')->take(5);
         if (Str::slug($tour->name) == $slug) {
             return view('tour.show', compact('tour','tours'));
         }

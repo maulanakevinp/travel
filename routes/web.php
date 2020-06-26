@@ -36,6 +36,7 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::patch('/update-setting', 'UserController@updateSetting')->name('update-setting');
     Route::patch('/update-profile', 'UserController@updateProfile')->name('update-profile');
     Route::patch('/order/{order}', 'OrderController@update')->name('order.update');
+    Route::put('/testimonial/{order}', 'OrderController@testimonial')->name('testimonial.update');
     Route::group(['middleware' => ['can:admin']], function () {
         Route::resource('package', 'PackageController');
         Route::resource('gallery', 'GalleryController');
