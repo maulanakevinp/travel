@@ -63,7 +63,7 @@ class TourController extends Controller
         $request->validate([
             'package'       => ['required'],
             'name'          => ['required','string','max:64'],
-            'price'         => ['required', 'numeric', 'min:100'],
+            'price'         => ['required', 'numeric', 'min:5000'],
             'description'   => ['required'],
             'images.*'      => ['required','image','max:2048']
         ]);
@@ -163,7 +163,7 @@ class TourController extends Controller
         $data = $request->validate([
             'package_id'    => ['required'],
             'name'          => ['required','string','max:64', Rule::unique('tours','name')->ignore($tour)],
-            'price'         => ['required', 'numeric', 'min:100'],
+            'price'         => ['required', 'numeric', 'min:5000'],
             'description'   => ['required'],
         ]);
 
