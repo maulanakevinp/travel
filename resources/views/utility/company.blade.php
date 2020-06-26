@@ -83,7 +83,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="latitude">{{ ('Latitude') }}</label>
+                                    <label for="latitude">{{ __('Latitude') }}</label>
                                     <input class="form-control" type="text" name="latitude" id="latitude" value="{{ $company->latitude }}" required>
                                 </div>
                             </div>

@@ -85,7 +85,7 @@
                         $fileparts = explode('.', $gallery->image);
                         $filetype = array_pop($fileparts);
                     @endphp
-                    <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="col-lg-4 col-md-6 mb-3 text-center">
                         <a href="{{ asset(Storage::url($gallery->image)) }}" data-fancybox>
                             @if ($filetype == 'jpg' || $filetype == 'jpeg' || $filetype == 'png' || $filetype == 'jpg')
                                 <img class="mw-100" src="{{ asset(Storage::url($gallery->image)) }}" alt="">

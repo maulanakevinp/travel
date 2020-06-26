@@ -92,7 +92,6 @@
                                 text: data.message,
                                 button: false,
                                 timer: 1000,
-
                             });
 
                             loadImages();
@@ -119,7 +118,6 @@
                             text: data.message,
                             button: false,
                             timer: 1000,
-
                         });
 
                         loadImages();
@@ -130,7 +128,6 @@
                             text: data.message,
                             button: false,
                             timer: 1000,
-
                         });
 
                         loadImages();

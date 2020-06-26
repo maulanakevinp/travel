@@ -86,11 +86,11 @@
                         @endif
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ url('/#about') }}">{{ __('About') }}</a>
+                                href="{{ url('/#contact') }}">{{ __('Contact') }}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link"
-                                href="{{ url('/#contact') }}">{{ __('Contact') }}</a>
+                                href="{{ url('/#about') }}">{{ __('About') }}</a>
                         </li>
 
                     </ul>

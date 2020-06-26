@@ -189,6 +189,8 @@
                                 icon: 'success',
                                 title: "{{ __('Success') }}",
                                 text: data.message,
+                                button: false,
+                                timer: 1000,
                             });
 
                             loadImages();
@@ -199,6 +201,8 @@
                                 icon: 'error',
                                 title: "{{ __('Fail') }}",
                                 text: data.message,
+                                button: false,
+                                timer: 1000,
                             });
 
                             loadImages();
@@ -235,6 +239,8 @@
                                 icon: 'success',
                                 title: "{{ __('Success') }}",
                                 text: data.message,
+                                button: false,
+                                timer: 1000,
                             });
 
                             loadImages();
@@ -243,6 +249,8 @@
                                 icon: 'error',
                                 title: "{{ __('Fail') }}",
                                 text: data.message,
+                                button: false,
+                                timer: 1000,
                             });
 
                             loadImages();
@@ -267,6 +275,8 @@
                             icon: 'success',
                             title: "{{ __('Success') }}",
                             text: data.message,
+                            button: false,
+                            timer: 1000,
                         });
 
                         loadImages();
@@ -275,6 +285,8 @@
                             icon: 'error',
                             title: "{{ __('Fail') }}",
                             text: data.message,
+                            button: false,
+                            timer: 1000,
                         });
 
                         loadImages();
