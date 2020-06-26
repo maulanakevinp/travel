@@ -134,7 +134,7 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         $order->paymentTime = date('Y-m-d H:i:s', strtotime($request->paymentTime));
-        $order->status = $request->status;
+        $order->status = 'Success';
         $order->save();
     }
 
