@@ -62,19 +62,6 @@
         </a>
     </div>
 
-    <section id="about" class="mt-5">
-        <div class="card bg-dark shadow p-5">
-            <div class="card-body">
-                <h2 class="text-center font-weight-bold mb-5">{{ __('About') }}</h2>
-                <div class="container px-xl-5">
-                    <p class="mt-3 text-center px-xl-5">
-                        {{ $company->description }}
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section id="tour-package" class="mt-5">
         <div class="card bg-dark shadow p-5">
             <div class="card-body">
@@ -91,6 +78,19 @@
                             </a>
                         </div>
                     @endforeach
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="mt-5">
+        <div class="card bg-dark shadow p-5">
+            <div class="card-body">
+                <h2 class="text-center font-weight-bold mb-5">{{ __('About') }}</h2>
+                <div class="container px-xl-5">
+                    <p class="mt-3 text-center px-xl-5">
+                        {{ $company->description }}
+                    </p>
                 </div>
             </div>
         </div>
