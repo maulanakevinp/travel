@@ -92,6 +92,7 @@
                             <a class="nav-link"
                                 href="{{ url('/#about') }}">{{ __('About') }}</a>
                         </li>
+                        @can('admin')
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle d-flex-inline" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -99,16 +100,15 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                @can('admin')
                                     <a class="dropdown-item {{ Request::segment(1) == "user" ? "active" : "" }}"    href="{{ route('user.index') }}">{{ __('Users') }}</a>
                                     <a class="dropdown-item {{ Request::segment(1) == "company" ? "active" : "" }}" href="{{ route('company.index') }}">{{ __('Company') }}</a>
                                     <a class="dropdown-item {{ Request::segment(1) == "gallery" ? "active" : "" }}" href="{{ route('gallery.index') }}">{{ __('Gallery') }}</a>
                                     <a class="dropdown-item {{ Request::segment(1) == "package" ? "active" : "" }}" href="{{ route('package.index') }}">{{ __('Package') }}</a>
                                     <a class="dropdown-item {{ Request::segment(1) == "tour" ? "active" : "" }}"    href="{{ route('tour.index') }}">{{ __('Tour') }}</a>
-                                @endcan
-                                <a class="dropdown-item {{ Request::segment(1) == "order" ? "active" : "" }}"   href="{{ route('order.index') }}">{{ __('Transaction') }}</a>
-                            </div>
-                        </li>
+                                    <a class="dropdown-item {{ Request::segment(1) == "order" ? "active" : "" }}"   href="{{ route('order.index') }}">{{ __('Transaction') }}</a>
+                                </div>
+                            </li>
+                        @endcan
 
                     </ul>
 
