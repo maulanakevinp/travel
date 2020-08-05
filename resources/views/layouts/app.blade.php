@@ -110,18 +110,17 @@
                             </li>
                         @endcan
 
+                        @can('member')
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('order.index') }}">{{ __('Transaction') }}</a>
+                            </li>
+                        @endcan
+
                     </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
-                        {{-- <li class="nav-item dropdown pt-1">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('images/indonesia.svg') }}" alt=""></a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item {{ Request::segment(1) == "id" ? "active" : "" }}" href="{{ route('local','id') }}"><img src="{{ asset('images/indonesia.svg') }}" alt=""></a></a>
-                                <a class="dropdown-item {{ Request::segment(1) == "en" ? "active" : "" }}" href="{{ route('local','id') }}"><img src="{{ asset('images/en.svg') }}" alt="" width="28" height="21"></a></a>
-                            </div>
-                        </li> --}}
                         @guest
                             <li class="nav-item {{ Request::segment(1) == "login" ? "active" : "" }}">
                                 <a class="nav-link"

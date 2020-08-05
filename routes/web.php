@@ -21,6 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/tour', 'TourController@index')->name('tour.index');
 Route::get('/tour-detail/{tour}/{slug}', 'TourController@show')->name('tour.show');
 Route::get('/tour-package/{package}/{slug}', 'TourController@package')->name('tour.package');
+
 Route::group(['middleware' => ['web', 'auth']], function () {
 
     Route::get('/setting', 'UserController@setting')->name('setting');
@@ -35,15 +36,20 @@ Route::group(['middleware' => ['web', 'auth']], function () {
     Route::patch('/update-avatar/{user}', 'UserController@updateAvatar')->name('update-avatar');
     Route::patch('/update-setting', 'UserController@updateSetting')->name('update-setting');
     Route::patch('/update-profile', 'UserController@updateProfile')->name('update-profile');
+
     Route::patch('/order/{order}', 'OrderController@update')->name('order.update');
     Route::put('/testimonial/{order}', 'OrderController@testimonial')->name('testimonial.update');
+
+    Route::resource('order', 'OrderController')->except('create','store','edit');
+
     Route::group(['middleware' => ['can:admin']], function () {
+
         Route::resource('package', 'PackageController');
         Route::resource('gallery', 'GalleryController');
         Route::resource('company', 'CompanyController');
         Route::resource('tour', 'TourController')->except('show','index');
-        Route::resource('order', 'OrderController')->except('index','create','store','show','update');
         Route::resource('user', 'UserController');
+
     });
 
 });
