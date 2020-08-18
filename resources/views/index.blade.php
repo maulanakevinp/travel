@@ -24,43 +24,45 @@
 
 @section('content')
 <div class="container">
-    <div id="slider" class="carousel slide shadow" data-ride="carousel">
-        <ol class="carousel-indicators">
-            <li data-target="#slider" data-slide-to="0" class="active"></li>
-            <li data-target="#slider" data-slide-to="1"></li>
-            <li data-target="#slider" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="{{ asset(Storage::url($company->galleries[0]->image)) }}" class="d-block w-100"
-                    alt="{{ $company->galleries[0]->description }}" style="max-height: 500px">
-                @if($company->galleries[0]->description)
-                    <div class="carousel-caption d-none d-md-block">
-                        <p>{{ $company->galleries[0]->description }}</p>
-                    </div>
-                @endif
-            </div>
-            @for($i = 1; $i < count($company->galleries); $i++)
-                <div class="carousel-item">
-                    <img src="{{ asset(Storage::url($company->galleries[$i]->image)) }}"
-                        class="d-block w-100" alt="{{ $company->galleries[$i]->description }}" style="max-height: 500px">
-                    @if($company->galleries[$i]->description)
+    @if (count($company->galleries) >= 1)
+        <div id="slider" class="carousel slide shadow" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#slider" data-slide-to="0" class="active"></li>
+                <li data-target="#slider" data-slide-to="1"></li>
+                <li data-target="#slider" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="{{ asset(Storage::url($company->galleries[0]->image)) }}" class="d-block w-100"
+                        alt="{{ $company->galleries[0]->description }}" style="max-height: 500px">
+                    @if($company->galleries[0]->description)
                         <div class="carousel-caption d-none d-md-block">
-                            <p>{{ $company->galleries[$i]->description }}</p>
+                            <p>{{ $company->galleries[0]->description }}</p>
                         </div>
                     @endif
                 </div>
-            @endfor
+                @for($i = 1; $i < count($company->galleries); $i++)
+                    <div class="carousel-item">
+                        <img src="{{ asset(Storage::url($company->galleries[$i]->image)) }}"
+                            class="d-block w-100" alt="{{ $company->galleries[$i]->description }}" style="max-height: 500px">
+                        @if($company->galleries[$i]->description)
+                            <div class="carousel-caption d-none d-md-block">
+                                <p>{{ $company->galleries[$i]->description }}</p>
+                            </div>
+                        @endif
+                    </div>
+                @endfor
+            </div>
+            <a class="carousel-control-prev" href="#slider" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">{{ __('Previous') }}</span>
+            </a>
+            <a class="carousel-control-next" href="#slider" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">{{ __('Next') }}</span>
+            </a>
         </div>
-        <a class="carousel-control-prev" href="#slider" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">{{ __('Previous') }}</span>
-        </a>
-        <a class="carousel-control-next" href="#slider" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">{{ __('Next') }}</span>
-        </a>
-    </div>
+    @endif
 
     <section id="tour-package" class="mt-5">
         <div class="card bg-dark shadow p-5">

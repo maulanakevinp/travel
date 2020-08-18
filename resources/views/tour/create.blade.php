@@ -18,7 +18,7 @@
                 <div class="card-header font-weight-bold">
                     {{ __('Add Tour') }}
                 </div>
-                <form action="{{ route('tour.store') }}" enctype="multipart/form-data" method="POST">
+                <form action="{{ route('tour.store') }}" method="POST">
                     @csrf
                     <div class="card-body">
                         @include('layouts.components.alert')
@@ -43,15 +43,6 @@
                             <label for="description">{{ __('Description') }}</label>
                             <textarea name="description" id="description">{!! old('description') !!}</textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="images">Images</label>
-                            <div id="field-images" class="row">
-                                <div class="col-lg-4 col-sm-6 mb-3">
-                                    <img onclick="$(this).siblings('.images').click()" class="mw-100 upload-image" style="max-height: 300px" src="{{ asset('images/upload.jpg') }}" alt="">
-                                    <input onchange="uploadImage(this)" type="file" name="images[]" class="images" style="display: none">
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="card-footer p-0">
                         <div class="float-right p-3">
@@ -71,20 +62,5 @@
 
 <script>
     CKEDITOR.replace( 'description' );
-    function uploadImage (inputFile) {
-        if (inputFile.files && inputFile.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $(inputFile).siblings('img').attr("src", e.target.result);
-            }
-            reader.readAsDataURL(inputFile.files[0]);
-            $("#field-images").append(`
-                <div class="col-lg-4 col-sm-6">
-                    <img onclick="$(this).siblings('.images').click()" class="mw-100 upload-image" style="max-height: 300px" src="{{ asset('images/upload.jpg') }}" alt="">
-                    <input onchange="uploadImage(this)" type="file" name="images[]" class="images" style="display: none">
-                </div>
-            `);
-        }
-    }
 </script>
 @endpush

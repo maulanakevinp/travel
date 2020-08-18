@@ -62,10 +62,9 @@ class TourController extends Controller
     {
         $request->validate([
             'package'       => ['required'],
-            'name'          => ['required','string','max:64'],
+            'name'          => ['required','string','max:64','unique:tours,name'],
             'price'         => ['required', 'numeric', 'min:5000'],
             'description'   => ['required'],
-            'images.*'      => ['required','image','max:2048']
         ]);
 
         $tour = Tour::create([
@@ -75,18 +74,8 @@ class TourController extends Controller
             'description'   => $request->description
         ]);
 
-        $images = $request->file('images');
-        foreach ($images as $image) {
-            if ($image) {
-                Gallery::create([
-                    'image' => $image->store('public/gallery'),
-                    'tour_id' => $tour->id
-                ]);
-            }
-        }
-
         alert()->success(__('alert.success-create',['attribute' => 'Tour']), __('Success'));
-        return redirect()->route('tour.index');
+        return redirect()->route('tour.edit',$tour);
     }
 
     /**

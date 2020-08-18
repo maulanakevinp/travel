@@ -25,6 +25,17 @@
                 </div>
                 <div class="card-body">
                     @include('layouts.components.alert')
+                    @if (count($tour->galleries) == 0)
+                        <div class="alert alert-info alert-dismissible fade show">
+                            <span class="alert-icon"><i class="fas fa-exclamation-triangle"></i> <strong>{{ __('Info') }}</strong></span>
+                            <span class="alert-text">
+                                {{ __("Please add an image for the customer to see") }}
+                            </span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
                     <form class="mb-3" action="{{ route('tour.update',$tour) }}" enctype="multipart/form-data" method="POST">
                         @csrf @method('patch')
                         <div class="form-group">

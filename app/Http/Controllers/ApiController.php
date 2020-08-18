@@ -13,7 +13,7 @@ class ApiController extends Controller
 {
     public function gallery()
     {
-        $galleries = Gallery::whereCompanyId(1)->get();
+        $galleries = Gallery::whereCompanyId(1)->orderBy('id','desc')->get();
 
         return response()->json([
             'success'   => true,

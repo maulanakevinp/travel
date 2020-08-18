@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('title')
 @if ($package)
     {{ $package->name }}
@@ -6,6 +7,7 @@
     {{ __('Tour List') }}
 @endif
 @endsection
+
 @section('styles')
 <style>
     .tour:hover{
@@ -59,26 +61,48 @@
     </div>
     <div class="card-columns">
         @foreach ($tours as $tour)
-            <a title="Detail" class="card-link" href="{{ route('tour.show',['tour' => $tour , 'slug' => Str::slug($tour->name)]) }}">
-                <div class="card shadow mt-3 bg-dark tour">
-                    <div class="card-img-top w-100 d-block" style="height: 250px; background-image: url('{{asset(Storage::url($tour->galleries[0]->image))}}'); background-size: cover"></div>
-                    <div class="card-body text-white">
-                        <h4 class="card-title block-with-text font-weight-bold text-white" style="height: 55px">
-                            {{$tour->name}}
-                        </h4>
-                        <p class="text-white float-right h4 pb-3">Rp. {{ substr(number_format($tour->price, 2, ',', '.'),0,-3) }}</p>
-                        @can('admin')
-                            <div>
-                                <a title="Ubah" class="btn btn-sm btn-success" href="{{ route('tour.edit',$tour) }}"><i class="fas fa-edit"></i></a>
-                                <form action="{{ route('tour.destroy',$tour) }}" method="post" class="d-inline-block">
-                                    @csrf @method('delete')
-                                    <button title="Hapus" class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash"></i></button>
-                                </form>
-                            </div>
-                        @endcan
+            @if (count($tour->galleries) >= 1)
+                <a title="Detail" class="card-link" href="{{ route('tour.show',['tour' => $tour , 'slug' => Str::slug($tour->name)]) }}">
+                    <div class="card shadow mt-3 bg-dark tour">
+                        <div class="card-img-top w-100 d-block" style="height: 250px; background-image: url('{{asset(Storage::url($tour->galleries[0]->image))}}'); background-size: cover"></div>
+                        <div class="card-body text-white">
+                            <h4 class="card-title block-with-text font-weight-bold text-white" style="height: 55px">
+                                {{$tour->name}}
+                            </h4>
+                            <p class="text-white float-right h4 pb-3">Rp. {{ substr(number_format($tour->price, 2, ',', '.'),0,-3) }}</p>
+                            @can('admin')
+                                <div>
+                                    <a title="Ubah" class="btn btn-sm btn-success" href="{{ route('tour.edit',$tour) }}"><i class="fas fa-edit"></i></a>
+                                    <form action="{{ route('tour.destroy',$tour) }}" method="post" class="d-inline-block">
+                                        @csrf @method('delete')
+                                        <button title="Hapus" class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            @endcan
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            @else
+                @can('admin')
+                    <div class="card shadow mt-3 bg-dark">
+                        <div class="card-body text-white">
+                            <h4 class="card-title block-with-text font-weight-bold text-white" style="height: 55px">
+                                {{$tour->name}}
+                            </h4>
+                            <p class="text-white float-right h4 pb-3">Rp. {{ substr(number_format($tour->price, 2, ',', '.'),0,-3) }}</p>
+                            @can('admin')
+                                <div>
+                                    <a title="Ubah" class="btn btn-sm btn-success" href="{{ route('tour.edit',$tour) }}"><i class="fas fa-edit"></i></a>
+                                    <form action="{{ route('tour.destroy',$tour) }}" method="post" class="d-inline-block">
+                                        @csrf @method('delete')
+                                        <button title="Hapus" class="btn btn-sm btn-danger" type="submit"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            @endcan
+                        </div>
+                    </div>
+                @endcan
+            @endif
         @endforeach
     </div>
     {{ $tours->links() }}

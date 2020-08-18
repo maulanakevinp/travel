@@ -72,3 +72,12 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $("form").submit(function () {
+        $(this).find('button:submit').html('Loading...');
+        $(this).find('button:submit').attr('disabled','disabled');
+    });
+</script>
+@endpush
