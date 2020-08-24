@@ -179,14 +179,18 @@
 
 @push('scripts')
 <script type="text/javascript" src="{{ asset('js/qrcode.js') }}"></script>
-    @if ($order->paymentTime == null)
-        <script type="text/javascript">
+    @if ($order->via == 'qris')
+        <script>
             const qrcode = new QRCode(document.getElementById('qrcode'),{
                 useSVG: true
             });
 
             qrcode.makeCode($("#qr").val());
+        </script>
+    @endif
 
+    @if ($order->paymentTime == null)
+        <script type="text/javascript">
             function checkTransaction(){
                 $.getJSON("{{ route('check-transaction',$order->transaction_id) }}", function(result){
                     if (result.WaktuBayar != "") {
@@ -208,7 +212,8 @@
             }
 
             checkTransaction();
-            setInterval(checkTransaction, 5000);
+            setInterval(checkTransaction(), 5000);
         </script>
     @endif
+
 @endpush

@@ -33,6 +33,15 @@ class OrderController extends Controller
                 $order->status = 'Expired';
                 $order->save();
             }
+
+            $req = $this->ipaymu->checkTransaction($order->transaction_id);
+            if ($order->paymentTime == null && array_key_exists('WaktuBayar', $req)) {
+                if ($req['WaktuBayar'] != "") {
+                    $order->paymentTime = date('Y-m-d H:i:s', strtotime($req['WaktuBayar']));
+                    $order->status = 'Success';
+                    $order->save();
+                }
+            }
         }
         return view('order.index', compact('ipaymu'));
     }
